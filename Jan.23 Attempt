@@ -1,0 +1,33 @@
+##Imported CSV file into environment
+# Load the dplyr package
+library(dplyr)
+
+# Clean data: Select specific columns
+data_cleaned <- `Omnibus_Survey` %>%
+  select(Q27, Q17, Q7, Q9, Q11, Q23, Q14, Q62...27, Q31, Q33, Q37, Q92...182, Q92...204, Q93...183, Q93...205, Q94, Q98,Q99, Q100)
+# Save the new dataframe to a CSV file
+write.csv(data_cleaned, "data_cleaned.csv", row.names = FALSE)
+
+# Rename columns for better readability
+renameddata <- data_cleaned %>%
+  rename(
+    Political_Interest = Q27,
+    Political_Party = Q17,
+    Democratic_Strength = Q7,
+    Republican_Strength = Q9,
+    Polarization = Q11,
+    Liberal_Conservative = Q23,
+    Election_Choice = Q14,
+    Political_Engagement = Q62...27,
+    National_Trust1 = Q92...182,
+    National_Trust2 = Q93...183,
+    Trust_Others = Q94,
+    Control = Q98,
+    Treatment_Consequence = Q99,
+    Treatment_Norms = Q100,
+    Appointment_Power1 = Q92...204,
+    Appointment_Power2 = Q93...205,
+    Gender = Q31,
+    Racial_Identity = Q33,
+    Religious_Affiliation = Q37
+  )
