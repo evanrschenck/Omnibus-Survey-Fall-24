@@ -5,3 +5,4 @@
 ##renameddata <- renameddata %>% mutate('National_Trust' = paste(National_Trust1, National_Trust2))
 ##renameddata <- renameddata %>% mutate('Appointment_Power' = paste (Appointment_Power1, Appointment_Power2))
 ##renameddata <- renameddata %>% select(Appointment_Power, National_Trust, Religious_Affiliation, Racial_Identity, Gender, Treatment_Norms, Treatment_Consequence, Control, Trust_Others, Harris_Teleprompter, Political_Engagement, Election_Choice, Liberal_Conservative, Polarization, Republican_Strength, Democratic_Strength, Political_Party, Political_Interest)
+##renameddata <- renameddata %>% select(-Harris_Teleprompter)
