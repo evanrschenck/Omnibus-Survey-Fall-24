@@ -31,3 +31,70 @@ renameddata <- data_cleaned %>%
     Racial_Identity = Q33,
     Religious_Affiliation = Q37
   )
+
+--------------------------------------------------------------------------------
+  
+#Remove undesired responses from Gender column
+filtered_data_Gender <- renameddata %>%
+  filter(Gender %in% c("Female", "Male", "Prefer not to disclose.", "None of the above. I identify myself as"))
+
+#Remove undesired responses from Political Interest 
+filtered_data_Political_Interest <- renameddata %>%
+  filter(Political_Interest %in% c("Don't know", "Not at all interested", "Not very interested", "Somewhat interested", "Very interested"))
+
+#Remove undesired responses from Political Party
+filtered_data_Political_Party <- renameddata %>%
+  filter(Political_Party %in% c("Republican", "Democrat", "Independent", "Other", "Don't know"))
+
+#Remove undesired responses from Democratic Strength
+filtered_data_Democratic_Strength <- renameddata %>%
+  filter(Democratic_Strength %in% c("Strong", "Not very strong"))
+
+#Remove undesired responses from Republican Strength
+filtered_data_Republican_Strength <- renameddata %>%
+  filter(Republican_Strength %in% c("Strong", "Not very strong"))
+
+--------------------------------------------------------------------------------
+
+# Load the ggplot2 package
+library(ggplot2)
+
+# Create a bar plot for gender distribution
+ggplot(filtered_data_Gender, aes(x = Gender)) +
+  geom_bar(fill = "blue", color = "black") +
+  labs(title = "Gender Distribution of Respondents", 
+       x = "Gender", 
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Create a bar plot for political interest distribution
+ggplot(filtered_data_Political_Interest, aes(x = Political_Interest)) +
+  geom_bar(fill = "blue", color = "black") +
+  labs(title = "Political Interest Distribution of Respondents", 
+       x = "Political Interest", 
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Create a bar plot for political party distribution
+ggplot(filtered_data_Political_Party, aes(x = Political_Party)) +
+  geom_bar(fill = "blue", color = "black") +
+  labs(title = "Political Party Distribution of Respondents", 
+       x = "Political Party", 
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Create a bar plot for Democratic Strength
+ggplot(filtered_data_Democratic_Strength, aes(x = Democratic_Strength)) +
+  geom_bar(fill = "blue", color = "black") +
+  labs(title = "Distribution of Democrats", 
+       x = "Strength of Democratic Values Held", 
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Create a bar plot for Republican Strength
+ggplot(filtered_data_Republican_Strength, aes(x = Republican_Strength)) +
+  geom_bar(fill = "blue", color = "black") +
+  labs(title = "Distribution of Republicans", 
+       x = "Strength of Republican Values Held", 
+       y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
