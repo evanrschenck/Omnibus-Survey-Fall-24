@@ -10,3 +10,6 @@
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ##Export > Save as Image > PNG > Save
+##rm(filtered_data)
+##filtered_data <- renameddata %>% filter(National_Trust %in% c("Only some of the time", "Most of the time", "Don't know", "Just about always", "Almost never"))
+##ggplot(filtered_data, aes(x = National_Trust)) + geom_bar(fill = "blue", color = "black") + labs(title = "Trust in National Govt. Distribution (Filtered)", x = "Control",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
