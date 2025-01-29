@@ -3,13 +3,20 @@
 ##data_cleaned <- `Omnibus.Survey.Fall.2024_December.9,.2024_09.11`%>% select(V18,V19,V21,V22,V23,V24,V25,V27,V149,V182,V183,V184,V185,V186,V187,V204,V205,V212,V214,V219)
 ##renameddata <- data_cleaned %>% rename(Political_Interest = V18, Political_Party = V19, Democratic_Strength = V21, Republican_Strength = V22, Polarization= V23, Liberal_Conservative= V24, Election_Choice= V25, Political_Engagement= V27, Harris_Teleprompter = V149, National_Trust= V182, Local_Trust2= V183, Trust_Others= V184,Control= V185, Treatment_Consequence= V186, Treatment_Norms= V187, Appointment_Power1= V204, Appointment_Power2= V205, Gender= V212, Racial_Identity= V214, Religious_Affiliation= V21)
 ##renameddata <- renameddata %>% select(-Harris_Teleprompter,-Political_Interest, -Democratic_Strength, -Republican_Strength, -Polarization,-Appointment_Power1, -Appointment_Power2)
-##filtered_data <- renameddata %>% filter(Control %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
-## ggplot(filtered_data, aes(x = Control)) +
-+     geom_bar(fill = "blue", color = "black") +
-+     labs(title = "Control Distribution (Filtered)", x = "Control",y = "Frequency") +
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
-##Export > Save as Image > PNG > Save
+##filtered_data <- renameddata %>% filter(Local_Trust %in% c("Only some of the time", "Most of the time", "Don't know", "Just about always", "Almost never"))
+##ggplot(filtered_data, aes(x = Local_Trust)) + geom_bar(fill = "blue", color = "black") + labs(title = "Trust in Local Govt. Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ##rm(filtered_data)
 ##filtered_data <- renameddata %>% filter(National_Trust %in% c("Only some of the time", "Most of the time", "Don't know", "Just about always", "Almost never"))
-##ggplot(filtered_data, aes(x = National_Trust)) + geom_bar(fill = "blue", color = "black") + labs(title = "Trust in National Govt. Distribution (Filtered)", x = "Control",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+##ggplot(filtered_data, aes(x = National_Trust)) + geom_bar(fill = "blue", color = "black") + labs(title = "Trust in National Govt. Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+##rm(filtered_data)
+##filtered_data <- renameddata %>% filter(Control %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
+##ggplot(filtered_data, aes(x = Control)) + geom_bar(fill = "blue", color = "black") + labs(title = "Control Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+##rm(filtered_data)
+##filtered_data <- renameddata %>% filter(Trust_Others %in% c("5-Most people can be trusted", "4", "3", "2", "1- You can't be too careful"))
+##ggplot(filtered_data, aes(x = Trust_Others)) + geom_bar(fill = "blue", color = "black") + labs(title = "Trust in Others Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+##rm(filtered_data)
+##filtered_data <- renameddata %>% filter(Treatment_Consequence %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
+##ggplot(filtered_data, aes(x = Treatment_Consequence)) + geom_bar(fill = "blue", color = "black") + labs(title = "Treatment Consequence Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+##rm(filtered_data)
+##filtered_data <- renameddata %>% filter(Treatment_Norms %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
+##ggplot(filtered_data, aes(x = Treatment_Norms)) + geom_bar(fill = "blue", color = "black") + labs(title = "Treatment Norms Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
