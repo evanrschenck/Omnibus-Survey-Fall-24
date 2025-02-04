@@ -20,3 +20,6 @@
 ##rm(filtered_data)
 ##filtered_data <- renameddata %>% filter(Treatment_Norms %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
 ##ggplot(filtered_data, aes(x = Treatment_Norms)) + geom_bar(fill = "blue", color = "black") + labs(title = "Treatment Norms Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+##rm(filtered_data
+##install.packages("visdat")
+##vis_dat(renameddata)
