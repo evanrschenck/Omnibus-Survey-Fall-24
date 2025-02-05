@@ -45,6 +45,12 @@
 ##gg_miss_var(renameddata)
 ##tidyr::replace_na
 ##print(as_shadow(renameddata), width = Inf)
+##renameddata <- renameddata %>% slice(-c(1,2))
 ##survey_data <- renameddata
 ##glimpse(survey_data)
-##renameddata <- renameddata %>% slice(-c(1,2))
+##survey_data$exit_treaty <- NA
+##model <- glm(exit_treaty ~ Political_Party + Gender + Religious_Affiliation + National_Trust + Local_Trust + Trust_Others, data = survey_data, family = binomial)
+##survey_data$predicted_exit_treaty <- predict(model, newdata = survey_data, type = "response")
+##summary(model)
+##install.packages("margins")
+##summary(marginal_effects)
