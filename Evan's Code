@@ -47,3 +47,4 @@
 ##print(as_shadow(renameddata), width = Inf)
 ##survey_data <- renameddata
 ##glimpse(survey_data)
+##renameddata <- renameddata %>% slice(-c(1,2))
