@@ -44,3 +44,5 @@
 ##library(naniar)
 ##gg_miss_var(renameddata)
 ##tidyr::replace_na
+##print(as_shadow(renameddata), width = Inf)
+##survey_data <- renameddata
