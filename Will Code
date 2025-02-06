@@ -54,22 +54,24 @@ filtered_data_Religious_Attendance <- renameddata %>%
 library(ggplot2)
 
 # Create a bar plot for gender distribution
-ggplot(filtered_data_Gender, aes(x = Gender)) +
+ggplot(filtered_data_Gender, aes(x = factor(Gender, levels = c("Male", "Female", "Prefer not to disclose.", "None of the above. I identify myself as")))) +
   geom_bar(fill = "blue", color = "black") +
   labs(title = "Gender Distribution of Respondents", 
        x = "Gender", 
        y = "Frequency") +
-  theme_classic() +  # Change background to white
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 
 # Create a bar plot for political party distribution
-ggplot(filtered_data_Political_Party, aes(x = Political_Party)) +
+ggplot(filtered_data_Political_Party, aes(x = factor(Political_Party, levels = c("Democrat", "Republican", "Independent", "Other", "Don't know")))) +
   geom_bar(fill = "blue", color = "black") +
   labs(title = "Political Party Distribution of Respondents", 
        x = "Political Party", 
        y = "Frequency") +
   theme_classic() +  
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 
 # Create a bar plot for racial identity
 ggplot(filtered_data_Racial_Identity, aes(x = Racial_Identity)) +
@@ -81,16 +83,16 @@ ggplot(filtered_data_Racial_Identity, aes(x = Racial_Identity)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
 
 # Create a bar plot for liberal/conservative
-ggplot(filtered_data_Liberal_Conservative, aes(x = Liberal_Conservative)) +
+ggplot(filtered_data_Liberal_Conservative, aes(x = factor(Liberal_Conservative, levels = c("Extremely Liberal", "Liberal", "Slightly Liberal", "Moderate/ Middle of the Road", "Slightly Conservative", "Conservative", "Extremely Conservative")))) +
   geom_bar(fill = "blue", color = "black") +
   labs(title = "Political Identification Distribution of Respondents", 
        x = "Political Identification", 
        y = "Frequency") +
   theme_classic() +  
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # Create a bar plot for religious attendance
-ggplot(filtered_data_Religious_Attendance, aes(x = Religious_Attendance)) +
+ggplot(filtered_data_Religious_Attendance, aes(x = factor(Religious_Attendance, levels = c("Never", "Once a year or less", "A few times a year", "Once or twice a month", "Once a week", "More than once a week")))) +
   geom_bar(fill = "blue", color = "black") +
   labs(title = "Distribution of Respondents' Religious Service Attendance", 
        x = "Religious Services Attended", 
