@@ -1,12 +1,8 @@
-##Imported CSV file into environment
-# Load the dplyr package
 library(dplyr)
 
 # Clean data: Select specific columns
 data_cleaned <- `Omnibus_Survey` %>%
-  select(Q17, Q23, Q14, Q62...27, Q31, Q33, Q37, Q92...182, Q93...183, Q94, Q98,Q99, Q100)
-# Save the new dataframe to a CSV file
-write.csv(data_cleaned, "data_cleaned.csv", row.names = FALSE)
+  select(Q17, Q23, Q14, Q62...27, Q31, Q33, Q37, Q92...182, Q93...183, Q94, Q98, Q99, Q100)
 
 # Rename columns for better readability
 renameddata <- data_cleaned %>%
@@ -26,77 +22,95 @@ renameddata <- data_cleaned %>%
     Religious_Attendance = Q37
   )
 
-
-#Remove undesired responses from Gender column
-filtered_data_Gender <- renameddata %>%
-  filter(Gender %in% c("Female", "Male", "Prefer not to disclose.", "None of the above. I identify myself as"))
-
-#Remove undesired responses from Political Party
-filtered_data_Political_Party <- renameddata %>%
-  filter(Political_Party %in% c("Republican", "Democrat", "Independent", "Other", "Don't know"))
-
-#Remove undesired responses from Racial Identity
-filtered_data_Racial_Identity <- renameddata %>%
-  filter(Racial_Identity %in% c("White", "Hispanic", "Black", "Multi-racial", "Native American", "Asian", "Other"))
-
-#Remove undesired responses from Liberal/Conservative
-filtered_data_Liberal_Conservative <- renameddata %>%
-  filter(Liberal_Conservative %in% c("Extremely Liberal", "Liberal", "Slightly Liberal", "Moderate/ Middle of the Road", "Slightly Conservative", "Conservative", "Extremely Conservative"))
-
-#Remove undesired responses from Religious Identity
-filtered_data_Religious_Attendance <- renameddata %>%
-  filter(Religious_Attendance %in% c("Never", "Once or twice a month", "Once a week", "More than once a week", "A few times a year", "Once a year or less"))
-
-
-
-
+# Apply all filters in one step
+filtered_data <- renameddata %>%
+  filter(
+    Gender %in% c("Female", "Male", "Prefer not to disclose.", "None of the above. I identify myself as"),
+    Political_Party %in% c("Republican", "Democrat", "Independent", "Other", "Don't know"),
+    Racial_Identity %in% c("White", "Hispanic", "Black", "Multi-racial", "Native American", "Asian", "Other"),
+    Liberal_Conservative %in% c("Extremely Liberal", "Liberal", "Slightly Liberal", "Moderate/ Middle of the Road", "Slightly Conservative", "Conservative", "Extremely Conservative"),
+    Religious_Attendance %in% c("Never", "Once a year or less", "A few times a year", "Once or twice a month", "Once a week", "More than once a week")
+  )
 
 library(ggplot2)
 
-# Create a bar plot for gender distribution
-ggplot(filtered_data_Gender, aes(x = factor(Gender, levels = c("Male", "Female", "Prefer not to disclose.", "None of the above. I identify myself as")))) +
+# Create ordered bar plots
+ggplot(filtered_data, aes(x = factor(Gender, levels = c("Male", "Female", "Prefer not to disclose.", "None of the above. I identify myself as")))) +
   geom_bar(fill = "blue", color = "black") +
-  labs(title = "Gender Distribution of Respondents", 
-       x = "Gender", 
-       y = "Frequency") +
+  labs(title = "Gender Distribution of Respondents", x = "Gender", y = "Frequency") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-
-# Create a bar plot for political party distribution
-ggplot(filtered_data_Political_Party, aes(x = factor(Political_Party, levels = c("Democrat", "Republican", "Independent", "Other", "Don't know")))) +
+ggplot(filtered_data, aes(x = factor(Political_Party, levels = c("Democrat", "Republican", "Independent", "Other", "Don't know")))) +
   geom_bar(fill = "blue", color = "black") +
-  labs(title = "Political Party Distribution of Respondents", 
-       x = "Political Party", 
-       y = "Frequency") +
-  theme_classic() +  
+  labs(title = "Political Party Distribution of Respondents", x = "Political Party", y = "Frequency") +
+  theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-
-# Create a bar plot for racial identity
-ggplot(filtered_data_Racial_Identity, aes(x = Racial_Identity)) +
+ggplot(filtered_data, aes(x = factor(Racial_Identity, levels = c("White", "Black", "Hispanic", "Asian", "Native American", "Multi-racial", "Other")))) +
   geom_bar(fill = "blue", color = "black") +
-  labs(title = "Racial Identity Distribution of Respondents", 
-       x = "Race Identified With", 
-       y = "Frequency") +
-  theme_classic() +  
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
-
-# Create a bar plot for liberal/conservative
-ggplot(filtered_data_Liberal_Conservative, aes(x = factor(Liberal_Conservative, levels = c("Extremely Liberal", "Liberal", "Slightly Liberal", "Moderate/ Middle of the Road", "Slightly Conservative", "Conservative", "Extremely Conservative")))) +
-  geom_bar(fill = "blue", color = "black") +
-  labs(title = "Political Identification Distribution of Respondents", 
-       x = "Political Identification", 
-       y = "Frequency") +
-  theme_classic() +  
+  labs(title = "Racial Identity Distribution of Respondents", x = "Race Identified With", y = "Frequency") +
+  theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-# Create a bar plot for religious attendance
-ggplot(filtered_data_Religious_Attendance, aes(x = factor(Religious_Attendance, levels = c("Never", "Once a year or less", "A few times a year", "Once or twice a month", "Once a week", "More than once a week")))) +
+ggplot(filtered_data, aes(x = factor(Liberal_Conservative, levels = c("Extremely Liberal", "Liberal", "Slightly Liberal", "Moderate/ Middle of the Road", "Slightly Conservative", "Conservative", "Extremely Conservative")))) +
   geom_bar(fill = "blue", color = "black") +
-  labs(title = "Distribution of Respondents' Religious Service Attendance", 
-       x = "Religious Services Attended", 
-       y = "Frequency") +
-  theme_classic() +  
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  labs(title = "Political Identification Distribution of Respondents", x = "Political Identification", y = "Frequency") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+ggplot(filtered_data, aes(x = factor(Religious_Attendance, levels = c("Never", "Once a year or less", "A few times a year", "Once or twice a month", "Once a week", "More than once a week")))) +
+  geom_bar(fill = "blue", color = "black") +
+  labs(title = "Distribution of Respondents' Religious Service Attendance", x = "Religious Services Attended", y = "Frequency") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Starting to look at missing data
+library(naniar)
+library(visdat)
+
+
+vis_dat(filtered_data)
+vis_miss(filtered_data)
+
+# Visualizing Missings in Variables
+gg_miss_var(filtered_data)
+
+# Replacing values with NA
+tidyr::replace_na
+
+# Tidy Missing Data: The Shadow Matrix
+data_shadow <- bind_shadow(filtered_data)
+data_nab <- nabular(filtered_data)
+
+library(dplyr)
+
+glimpse(data_shadow)
+
+glimpse(data_nab)
+
+all.equal(data_shadow, data_nab)
+
+#Modeling Missingness- I THINK THIS SECTION IS WRONG
+filtered_data %>%
+  add_prop_miss() %>%
+  head()
+
+library(rpart)
+library(rpart.plot)
+library(dplyr)
+
+model <- filtered_data %>%
+  add_prop_miss() %>%
+  rpart(prop_miss_all ~ ., data = ., model = TRUE, control = rpart.control(cp = 0.02)) 
+
+prp(model, type = 4, extra = 101, prefix = "Prop. Miss = ", roundint = FALSE, cex = 0.1)
+
+
+## BEGINNING TO ANALYZE
+
+# Inspect the data 
+glimpse(filtered_data)
+
+# Recode the treatment variable (if needed) 
+survey_data <- filtered_data %>% mutate(treatment = factor(treatment, levels = c("control", "norms_treatment", "punishment_treatment"))) 
