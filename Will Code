@@ -65,52 +65,61 @@ ggplot(filtered_data, aes(x = factor(Religious_Attendance, levels = c("Never", "
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-# Starting to look at missing data
-library(naniar)
+rm(filtered_data)
+filtered_data <- renameddata %>% filter(Treatment_Consequence %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
+ggplot(filtered_data, aes(x = Treatment_Consequence)) + geom_bar(fill = "blue", color = "black") + labs(title = "Treatment Consequence Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+rm(filtered_data)
+filtered_data <- renameddata %>% filter(Treatment_Norms %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
+ggplot(filtered_data, aes(x = Treatment_Norms)) + geom_bar(fill = "blue", color = "black") + labs(title = "Treatment Norms Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+rm(filtered_data)
+renameddata <- renameddata %>% slice(-c(1,2))
+df <- as.data.frame(renameddata)
+renameddata <- subset(df, Gender %in% c("Male", "Female"))
+df <- renameddata %>% mutate(Political_Party = recode(Political_Party, "Independent" = "Other", "Don't know" = "Other"))
+df <- df %>% mutate(across(everything(), as.factor))
+renameddata <- df
+install.packages("visdat")
 library(visdat)
-
-
-vis_dat(filtered_data)
-vis_miss(filtered_data)
-
-# Visualizing Missings in Variables
-gg_miss_var(filtered_data)
-
-# Replacing values with NA
+sapply(renameddata, function(x) sum(x == "", na.rm = TRUE))
+renameddata[renameddata == ""] <- NA
+table(unlist(renameddata)) # See if unusual values appear
+str(renameddata)
+vis_dat(renameddata)
+vis_miss(renameddata)
+p <- ggplot(renameddata, aes(x = Control, y = Treatment_Norms)) + geom_point()
+ggplot(renameddata, aes(x = Control, y = Treatment_Norms)) + geom_point()
+test_data <- data.frame(Control = 1:10, Treatment_Norms = rnorm(10))
+ggplot(test_data, aes(x = Control, y = Treatment_Norms)) + geom_point()
+p <- ggplot(renameddata, aes(x = Control, y = Treatment_Consequence)) + geom_point()
+ggplot(renameddata, aes(x = Control, y = Treatment_Consequence)) + geom_point()
+test_data <- data.frame(Control = 1:10, Treatment_Consequence = rnorm(10))
+ggplot(test_data, aes(x = Control, y = Treatment_Consequence)) + geom_point() 
+p <- ggplot(renameddata, aes(x = Treatment_Norms, y = Treatment_Consequence)) + geom_point()
+ggplot(renameddata, aes(x = Treatment_Norms, y = Treatment_Consequence)) + geom_point()
+test_data <- data.frame(Treatment_Norms = 1:10, Treatment_Consequence = rnorm(10))
+ggplot(test_data, aes(x = Treatment_Norms, y = Treatment_Consequence)) + geom_point() 
+install.packages("naniar")
+library(naniar)
+gg_miss_var(renameddata)
 tidyr::replace_na
+print(as_shadow(renameddata), width = Inf)
+survey_data <- renameddata
+glimpse(survey_data)
 
-# Tidy Missing Data: The Shadow Matrix
-data_shadow <- bind_shadow(filtered_data)
-data_nab <- nabular(filtered_data)
+survey_data$Gender <- as.factor(survey_data$Gender)
+survey_data$Religious_Attendance <- as.factor(survey_data$Religious_Attendance)
+survey_data$Political_Party <- as.factor(survey_data$Political_Party)
+survey_data$National_Trust <- as.factor(survey_data$National_Trust)
+survey_data$LocalGov_trust <- as.factor(survey_data$LocalGov_trust)
+survey_data$Trust_Others <- as.factor(survey_data$Trust_Others)
 
-library(dplyr)
+table(survey_data$Control, useNA = "always")
+survey_data$exit_treaty <- ifelse(survey_data$Control == "Leave the treaty", 1, ifelse(survey_data$Control == "Remain in the treaty", 0, NA))
+table(survey_data$exit_treaty, useNA = "always")
+survey_data <- survey_data[!is.na(survey_data$exit_treaty), ]
 
-glimpse(data_shadow)
-
-glimpse(data_nab)
-
-all.equal(data_shadow, data_nab)
-
-#Modeling Missingness- I THINK THIS SECTION IS WRONG
-filtered_data %>%
-  add_prop_miss() %>%
-  head()
-
-library(rpart)
-library(rpart.plot)
-library(dplyr)
-
-model <- filtered_data %>%
-  add_prop_miss() %>%
-  rpart(prop_miss_all ~ ., data = ., model = TRUE, control = rpart.control(cp = 0.02)) 
-
-prp(model, type = 4, extra = 101, prefix = "Prop. Miss = ", roundint = FALSE, cex = 0.1)
+model_test <- glm(exit_treaty ~ Control + Gender, data = survey_data, family = binomial(link = "logit"))
+summary(model_test)
 
 
-## BEGINNING TO ANALYZE
-
-# Inspect the data 
-glimpse(filtered_data)
-
-# Recode the treatment variable (if needed) 
-survey_data <- filtered_data %>% mutate(treatment = factor(treatment, levels = c("control", "norms_treatment", "punishment_treatment"))) 
