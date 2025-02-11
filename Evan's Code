@@ -60,3 +60,11 @@
 ##survey_data$National_Trust <- as.factor(survey_data$National_Trust)
 ##survey_data$Local_Trust <- as.factor(survey_data$Local_Trust)
 ##survey_data$Trust_Others <- as.factor(survey_data$Trust_Others)
+##table(survey_data$Control, useNA = "always")
+##survey_data$exit_treaty <- ifelse(survey_data$Control == "Leave the treaty", 1, ifelse(survey_data$Control == "Remain in the treaty", 0, NA))
+##table(survey_data$exit_treaty, useNA = "always")
+##survey_data <- survey_data[!is.na(survey_data$exit_treaty), ]
+##model <- glm(exit_treaty ~ Control + Gender + Religious_Affiliation + Political_Party + 
++                  National_Trust + Local_Trust + Trust_Others, 
++              data = survey_data, 
++              family = binomial(link = "logit"))
