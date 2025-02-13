@@ -68,3 +68,6 @@
 +                  National_Trust + Local_Trust + Trust_Others, 
 +              data = survey_data, 
 +              family = binomial(link = "logit"))
+##summary(model)
+##install.packages("margins")
+##library(margins)
