@@ -72,6 +72,9 @@ rm(filtered_data)
 filtered_data <- renameddata %>% filter(Treatment_Norms %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
 ggplot(filtered_data, aes(x = Treatment_Norms)) + geom_bar(fill = "blue", color = "black") + labs(title = "Treatment Norms Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+
+##Analyzing missingness
+
 rm(filtered_data)
 renameddata <- renameddata %>% slice(-c(1,2))
 df <- as.data.frame(renameddata)
@@ -107,19 +110,64 @@ print(as_shadow(renameddata), width = Inf)
 survey_data <- renameddata
 glimpse(survey_data)
 
-survey_data$Gender <- as.factor(survey_data$Gender)
-survey_data$Religious_Attendance <- as.factor(survey_data$Religious_Attendance)
-survey_data$Political_Party <- as.factor(survey_data$Political_Party)
-survey_data$National_Trust <- as.factor(survey_data$National_Trust)
-survey_data$LocalGov_trust <- as.factor(survey_data$LocalGov_trust)
-survey_data$Trust_Others <- as.factor(survey_data$Trust_Others)
+
+
+library(dplyr)
+
+renameddata <- renameddata %>%
+  mutate(Gender_Coded = ifelse(Gender == "Male", 1, 
+                               ifelse(Gender == "Female", 2, NA)))
+
+renameddata <- renameddata %>%
+  mutate(Religious_Attendance_Coded = ifelse(Religious_Attendance== "Never", 1,
+                                            ifelse(Religious_Attendance== "Once a year or less", 2,
+                                                   ifelse(Religious_Attendance== "A Few times a year", 3,
+                                                          ifelse(Religious_Attendance== "Once or twice a month", 4,
+                                                                 ifelse(Religious_Attendance== "Once a week", 5,
+                                                                        ifelse(Religious_Attendance== "More than once a week", 6, NA))))) ))
+renameddata <- renameddata %>%
+  mutate(Political_Party_Coded = ifelse(Political_Party== "Democrat", 1,
+                                        ifelse(Political_Party== "Independent", 2,
+                                               ifelse(Political_Party== "Other", 2,
+                                                      ifelse(Political_Party== "Don't Know", 2,
+                                                             ifelse(Political_Party== "Republican", 3, NA))))))
+renameddata <- renameddata %>%
+  mutate(National_Trust_Coded = ifelse(National_Trust== "Almost never", 1,
+                                       ifelse(National_Trust== "Only some of the time", 2,
+                                              ifelse(National_Trust== "Most of the time", 3,
+                                                     ifelse(National_Trust== "Just About Always", 4, NA)))))
+renameddata <- renameddata %>%
+  mutate(LocalGov_Trust_Coded = ifelse(LocalGov_trust== "Almost never", 1,
+                                       ifelse(LocalGov_trust== "Only some of the time", 2,
+                                              ifelse(LocalGov_trust== "Most of the time", 3,
+                                                     ifelse(LocalGov_trust== "Just About Always", 4, NA)))))
+renameddata <- renameddata %>%
+  mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1,
+                                       ifelse(Trust_Others== "2", 2,
+                                              ifelse(Trust_Others== "3", 3,
+                                                     ifelse(Trust_Others== "4", 4,
+                                                            ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
 
 table(survey_data$Control, useNA = "always")
 survey_data$exit_treaty <- ifelse(survey_data$Control == "Leave the treaty", 1, ifelse(survey_data$Control == "Remain in the treaty", 0, NA))
 table(survey_data$exit_treaty, useNA = "always")
 survey_data <- survey_data[!is.na(survey_data$exit_treaty), ]
 
-model_test <- glm(exit_treaty ~ Control + Gender, data = survey_data, family = binomial(link = "logit"))
-summary(model_test)
+survey_data <- survey_data %>% mutate(treatment = factor(treatment, levels = c("control", "norms_treatment", "punishment_treatment"))) 
+
+
+# Logistic regression model 
+model <- glm( exit_treaty ~ Control + Gender + Religious_Attendance + Political_Party + National_Trust + LocalGov_trust + Trust_Others, data = survey_data, family = binomial(link = "logit") ) 
+# Summary of the model 
+summary(model) 
+# Marginal effects analysis 
+library(margins)
+marginal_effects <- margins(model)
+# Summary of marginal effects
+summary(marginal_effects) 
+# Create a table of marginal effects
+marginal_effects_table <- tidy(marginal_effects)
+write.csv(marginal_effects_table, "marginal_effects_table.csv") 
+
 
 
