@@ -175,11 +175,12 @@ survey_data <- survey_data %>%
   )
 
 
-model <- glm(exit_treaty ~ Control + Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_trust + Trust_Others, 
+model_control <- glm(exit_treaty ~ Control + Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
              data = survey_data, family = binomial(link = "logit"))
 
-summary(model)
+summary(model_control)
 
 library(margins)
 marginal_effects <- margins(model)
 summary(marginal_effects)
+
