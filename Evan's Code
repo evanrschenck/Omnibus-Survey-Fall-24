@@ -58,7 +58,4 @@
 ##renameddata <- renameddata %>% mutate(LocalGov_Trust_Coded = ifelse(Local_Trust== "Almost never", 1, ifelse(Local_Trust== "Only some of the time", 2, ifelse(Local_Trust== "Most of the time", 3, ifelse(Local_Trust== "Just About Always", 4, NA)))))
 ##renameddata <- renameddata %>% mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1, ifelse(Trust_Others== "2", 2, ifelse(Trust_Others== "3", 3, ifelse(Trust_Others== "4", 4, ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
 ##survey_data <- renameddata
-##survey_data$exit_treaty<- ifelse(survey_data$Control == "Leave the treaty", 1, ifelse(survey_data$Control == "Remain in the treaty", 0, NA))
-##table(survey_data$exit_treaty, useNA = "always")
-##ControlModel <- glm(exit_treaty ~ Control + Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, data = survey_data, family = binomial(link = "logit"))
-##summary(ControlModel)
+##
