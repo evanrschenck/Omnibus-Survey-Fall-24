@@ -1,3 +1,15 @@
+load_or_install <- function(package) {
+  if (!require(package, character.only = TRUE)) {
+    install.packages(package)
+    library(package, character.only = TRUE)
+  }
+}
+
+load_or_install("dplyr")
+load_or_install("ggplot2")
+load_or_install("visdat")
+load_or_install("naniar")
+load_or_install("margins")
 library(dplyr)
 
 # Clean data: Select specific columns
@@ -82,7 +94,6 @@ renameddata <- subset(df, Gender %in% c("Male", "Female"))
 df <- renameddata %>% mutate(Political_Party = recode(Political_Party, "Independent" = "Other", "Don't know" = "Other"))
 df <- df %>% mutate(across(everything(), as.factor))
 renameddata <- df
-install.packages("visdat")
 library(visdat)
 sapply(renameddata, function(x) sum(x == "", na.rm = TRUE))
 renameddata[renameddata == ""] <- NA
@@ -102,7 +113,6 @@ p <- ggplot(renameddata, aes(x = Treatment_Norms, y = Treatment_Consequence)) + 
 ggplot(renameddata, aes(x = Treatment_Norms, y = Treatment_Consequence)) + geom_point()
 test_data <- data.frame(Treatment_Norms = 1:10, Treatment_Consequence = rnorm(10))
 ggplot(test_data, aes(x = Treatment_Norms, y = Treatment_Consequence)) + geom_point() 
-install.packages("naniar")
 library(naniar)
 gg_miss_var(renameddata)
 tidyr::replace_na
@@ -110,54 +120,53 @@ print(as_shadow(renameddata), width = Inf)
 survey_data <- renameddata
 glimpse(survey_data)
 
-
+##Analysis
 
 library(dplyr)
 
-renameddata <- renameddata %>%
+survey_data <- survey_data %>%
   mutate(Gender_Coded = ifelse(Gender == "Male", 1, 
                                ifelse(Gender == "Female", 2, NA)))
 
-renameddata <- renameddata %>%
+survey_data <- survey_data %>%
   mutate(Religious_Attendance_Coded = ifelse(Religious_Attendance== "Never", 1,
                                             ifelse(Religious_Attendance== "Once a year or less", 2,
                                                    ifelse(Religious_Attendance== "A Few times a year", 3,
                                                           ifelse(Religious_Attendance== "Once or twice a month", 4,
                                                                  ifelse(Religious_Attendance== "Once a week", 5,
                                                                         ifelse(Religious_Attendance== "More than once a week", 6, NA))))) ))
-renameddata <- renameddata %>%
+survey_data <- survey_data %>%
   mutate(Political_Party_Coded = ifelse(Political_Party== "Democrat", 1,
                                         ifelse(Political_Party== "Independent", 2,
                                                ifelse(Political_Party== "Other", 2,
                                                       ifelse(Political_Party== "Don't Know", 2,
                                                              ifelse(Political_Party== "Republican", 3, NA))))))
-renameddata <- renameddata %>%
+survey_data <- survey_data %>%
   mutate(National_Trust_Coded = ifelse(National_Trust== "Almost never", 1,
                                        ifelse(National_Trust== "Only some of the time", 2,
                                               ifelse(National_Trust== "Most of the time", 3,
-                                                     ifelse(National_Trust== "Just About Always", 4, NA)))))
-renameddata <- renameddata %>%
+                                                     ifelse(National_Trust== "Just about always", 4, NA)))))
+survey_data <- survey_data %>%
   mutate(LocalGov_Trust_Coded = ifelse(LocalGov_trust== "Almost never", 1,
                                        ifelse(LocalGov_trust== "Only some of the time", 2,
                                               ifelse(LocalGov_trust== "Most of the time", 3,
-                                                     ifelse(LocalGov_trust== "Just About Always", 4, NA)))))
-renameddata <- renameddata %>%
+                                                     ifelse(LocalGov_trust== "Just about always", 4, NA)))))
+survey_data <- survey_data %>%
   mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1,
                                        ifelse(Trust_Others== "2", 2,
                                               ifelse(Trust_Others== "3", 3,
                                                      ifelse(Trust_Others== "4", 4,
                                                             ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
 
-table(survey_data$Control, useNA = "always")
-survey_data$exit_treaty <- ifelse(survey_data$Control == "Leave the treaty", 1, ifelse(survey_data$Control == "Remain in the treaty", 0, NA))
-table(survey_data$exit_treaty, useNA = "always")
-survey_data <- survey_data[!is.na(survey_data$exit_treaty), ]
+survey_data <- survey_data %>%
+  filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
+  mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
 
-survey_data <- survey_data %>% mutate(treatment = factor(treatment, levels = c("control", "norms_treatment", "punishment_treatment"))) 
+
 
 
 # Logistic regression model 
-model <- glm( exit_treaty ~ Control + Gender + Religious_Attendance + Political_Party + National_Trust + LocalGov_trust + Trust_Others, data = survey_data, family = binomial(link = "logit") ) 
+model <- glm( exit_treaty ~ Control + Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_trust + Trust_Others, data = survey_data, family = binomial(link = "logit") ) 
 # Summary of the model 
 summary(model) 
 # Marginal effects analysis 
@@ -168,6 +177,4 @@ summary(marginal_effects)
 # Create a table of marginal effects
 marginal_effects_table <- tidy(marginal_effects)
 write.csv(marginal_effects_table, "marginal_effects_table.csv") 
-
-
 
