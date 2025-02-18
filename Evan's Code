@@ -69,5 +69,3 @@
 +              data = survey_data, 
 +              family = binomial(link = "logit"))
 ##summary(model)
-##install.packages("margins")
-##library(margins)
