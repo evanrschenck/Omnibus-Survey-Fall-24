@@ -158,23 +158,28 @@ survey_data <- survey_data %>%
                                                      ifelse(Trust_Others== "4", 4,
                                                             ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
 
+
 survey_data <- survey_data %>%
   filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
   mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
 
 
+table(survey_data$Control, useNA = "always")
+table(survey_data$exit_treaty, useNA = "always")
+
+survey_data <- survey_data %>%
+  filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
+  mutate(
+    exit_treaty = ifelse(Control == "Leave the treaty", 1, 0),
+    Control = factor(Control) # Drop unused levels
+  )
 
 
-# Logistic regression model 
-model <- glm( exit_treaty ~ Control + Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_trust + Trust_Others, data = survey_data, family = binomial(link = "logit") ) 
-# Summary of the model 
-summary(model) 
-# Marginal effects analysis 
+model <- glm(exit_treaty ~ Control + Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_trust + Trust_Others, 
+             data = survey_data, family = binomial(link = "logit"))
+
+summary(model)
+
 library(margins)
 marginal_effects <- margins(model)
-# Summary of marginal effects
-summary(marginal_effects) 
-# Create a table of marginal effects
-marginal_effects_table <- tidy(marginal_effects)
-write.csv(marginal_effects_table, "marginal_effects_table.csv") 
-
+summary(marginal_effects)
