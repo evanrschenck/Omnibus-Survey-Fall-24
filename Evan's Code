@@ -51,21 +51,8 @@
 ##library(naniar)
 ##gg_miss_var(renameddata)
 ##tidyr::replace_na
-##print(as_shadow(renameddata), width = Inf)
-##survey_data <- renameddata
-##glimpse(survey_data)
-##survey_data$Gender <- as.factor(survey_data$Gender)
-##survey_data$Religious_Affiliation <- as.factor(survey_data$Religious_Affiliation)
-##survey_data$Political_Party <- as.factor(survey_data$Political_Party)
-##survey_data$National_Trust <- as.factor(survey_data$National_Trust)
-##survey_data$Local_Trust <- as.factor(survey_data$Local_Trust)
-##survey_data$Trust_Others <- as.factor(survey_data$Trust_Others)
-##table(survey_data$Control, useNA = "always")
-##survey_data$exit_treaty <- ifelse(survey_data$Control == "Leave the treaty", 1, ifelse(survey_data$Control == "Remain in the treaty", 0, NA))
-##table(survey_data$exit_treaty, useNA = "always")
-##survey_data <- survey_data[!is.na(survey_data$exit_treaty), ]
-##model <- glm(exit_treaty ~ Control + Gender + Religious_Affiliation + Political_Party + 
-+                  National_Trust + Local_Trust + Trust_Others, 
-+              data = survey_data, 
-+              family = binomial(link = "logit"))
-##summary(model)
+##renameddata <- renameddata %>% mutate(Religious_Attendance_Coded = ifelse(Religious_Attendance== "Never", 1, ifelse(Religious_Attendance== "Once a year or less", 2, ifelse(Religious_Attendance== "A Few times a year", 3, ifelse(Religious_Attendance== "Once or twice a month", 4, ifelse(Religious_Attendance== "Once a week", 5, ifelse(Religious_Attendance== "More than once a week", 6, NA))))) ))
+##renameddata <- renameddata %>% mutate(Political_Party_Coded = ifelse(Political_Party== "Democrat", ifelse(Political_Party== "Independent", 2, ifelse(Political_Party== "Other", 2, ifelse(Political_Party== "Don't Know", 2, ifelse(Political_Party== "Republican", 3, NA))))))
+##renameddata <- renameddata %>% mutate(National_Trust_Coded = ifelse(National_Trust== "Almost never", 1, ifelse(National_Trust== "Only some of the time", 2, ifelse(National_Trust== "Most of the time", 3, ifelse(National_Trust== "Just About Always", 4, NA)))))
+##renameddata <- renameddata %>% mutate(LocalGov_Trust_Coded = ifelse(Local_Trust== "Almost never", 1, ifelse(Local_Trust== "Only some of the time", 2, ifelse(Local_Trust== "Most of the time", 3, ifelse(Local_Trust== "Just About Always", 4, NA)))))
+##renameddata <- renameddata %>% mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1, ifelse(Trust_Others== "2", 2, ifelse(Trust_Others== "3", 3, ifelse(Trust_Others== "4", 4, ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
