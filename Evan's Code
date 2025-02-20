@@ -1,25 +1,48 @@
 ##Imported CSV file into environment
+
+  install dplyr 
 ##install.packages("dplyr")
+ 
+  selecting columns to keep
 ##data_cleaned <- `Omnibus.Survey.Fall.2024_December.9,.2024_09.11`%>% select(V18,V19,V21,V22,V23,V24,V25,V27,V149,V182,V183,V184,V185,V186,V187,V204,V205,V212,V214,V219)
+
+  renaming columns
 ##renameddata <- data_cleaned %>% rename(Political_Interest = V18, Political_Party = V19, Democratic_Strength = V21, Republican_Strength = V22, Polarization= V23, Liberal_Conservative= V24, Election_Choice= V25, Political_Engagement= V27, Harris_Teleprompter = V149, National_Trust= V182, Local_Trust2= V183, Trust_Others= V184,Control= V185, Treatment_Consequence= V186, Treatment_Norms= V187, Appointment_Power1= V204, Appointment_Power2= V205, Gender= V212, Racial_Identity= V214, Religious_Affiliation= V21)
+
+  removing columns
 ##renameddata <- renameddata %>% select(-Harris_Teleprompter,-Political_Interest, -Democratic_Strength, -Republican_Strength, -Polarization,-Appointment_Power1, -Appointment_Power2)
+
+  filtering data into categories
 ##filtered_data <- renameddata %>% filter(Local_Trust %in% c("Only some of the time", "Most of the time", "Don't know", "Just about always", "Almost never"))
+
+  ggplot creation
 ##ggplot(filtered_data, aes(x = Local_Trust)) + geom_bar(fill = "blue", color = "black") + labs(title = "Trust in Local Govt. Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ##rm(filtered_data)
+
 ##filtered_data <- renameddata %>% filter(National_Trust %in% c("Only some of the time", "Most of the time", "Don't know", "Just about always", "Almost never"))
 ##ggplot(filtered_data, aes(x = National_Trust)) + geom_bar(fill = "blue", color = "black") + labs(title = "Trust in National Govt. Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+  removing data to rerun
 ##rm(filtered_data)
+
 ##filtered_data <- renameddata %>% filter(Control %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
 ##ggplot(filtered_data, aes(x = Control)) + geom_bar(fill = "blue", color = "black") + labs(title = "Control Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 ##rm(filtered_data)
+
 ##filtered_data <- renameddata %>% filter(Trust_Others %in% c("5-Most people can be trusted", "4", "3", "2", "1- You can't be too careful"))
+
 ##ggplot(filtered_data, aes(x = Trust_Others)) + geom_bar(fill = "blue", color = "black") + labs(title = "Trust in Others Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ##rm(filtered_data)
+
 ##filtered_data <- renameddata %>% filter(Treatment_Consequence %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
 ##ggplot(filtered_data, aes(x = Treatment_Consequence)) + geom_bar(fill = "blue", color = "black") + labs(title = "Treatment Consequence Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 ##rm(filtered_data)
+
 ##filtered_data <- renameddata %>% filter(Treatment_Norms %in% c("Remain in the treaty", "Leave the treaty", "Don't know"))
 ##ggplot(filtered_data, aes(x = Treatment_Norms)) + geom_bar(fill = "blue", color = "black") + labs(title = "Treatment Norms Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 ##rm(filtered_data)
 ##renameddata <- renameddata %>% slice(-c(1,2))
 ##df <- as.data.frame(renameddata)
@@ -58,26 +81,25 @@
 ##renameddata <- renameddata %>% mutate(LocalGov_Trust_Coded = ifelse(Local_Trust== "Almost never", 1, ifelse(Local_Trust== "Only some of the time", 2, ifelse(Local_Trust== "Most of the time", 3, ifelse(Local_Trust== "Just About Always", 4, NA)))))
 ##renameddata <- renameddata %>% mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1, ifelse(Trust_Others== "2", 2, ifelse(Trust_Others== "3", 3, ifelse(Trust_Others== "4", 4, ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
 ##survey_data <- renameddata
-##survey_data <- survey_data %>%
-  filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
-  mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
-
 
 table(survey_data$Control, useNA = "always")
 table(survey_data$exit_treaty, useNA = "always")
 
-survey_data <- survey_data %>%
+survey_data_control <- renameddata %>%
 filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
   mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0),
     Control = factor(Control) # Drop unused levels)
 
 
-model_control <- glm(exit_treaty ~ Control + Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + 
-National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
-             data = survey_data, family = binomial(link = "logit"))
 
-summary(model_control)
+##model_control <- glm( exit_treaty ~ Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, data = survey_data, family = binomial(link = "logit") ) 
+##summary(model_control)
 
-library(margins)
-marginal_effects <- margins(model)
-summary(marginal_effects)
+
+##survey_data_treatment_norms <- renameddata %>% filter(Treatment_Norms %in% c("Leave the treaty", "Remain in the treaty")) %>% mutate(exit_treaty = ifelse(Treatment_Norms == "Leave the treaty", 1, 0))
+##model_treatment_norms <- glm(exit_treaty ~ Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, data = survey_data_treatment_norms, family = binomial(link = "logit") ) 
+##summay(model_treatment_norms)
+
+##survey_data_treatment_consequence <- renameddata %>% filter(Treatment_Consequence %in% c("Leave the treaty", "Remain in the treaty")) %>% mutate(exit_treaty = ifelse(Treatment_Consequence == "Leave the treaty", 1, 0))
+##model_treatment_consequence <- glm(exit_treaty ~ Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, data = survey_data_treatment_consequence, family = binomial(link = "logit") ) 
+##summary(model_treatment_consequence)
