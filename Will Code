@@ -85,40 +85,6 @@ filtered_data <- renameddata %>% filter(Treatment_Norms %in% c("Remain in the tr
 ggplot(filtered_data, aes(x = Treatment_Norms)) + geom_bar(fill = "blue", color = "black") + labs(title = "Treatment Norms Distribution (Filtered)", x = "Responses",y = "Frequency") + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
-##Analyzing missingness
-
-rm(filtered_data)
-renameddata <- renameddata %>% slice(-c(1,2))
-df <- as.data.frame(renameddata)
-renameddata <- subset(df, Gender %in% c("Male", "Female"))
-df <- renameddata %>% mutate(Political_Party = recode(Political_Party, "Independent" = "Other", "Don't know" = "Other"))
-df <- df %>% mutate(across(everything(), as.factor))
-renameddata <- df
-library(visdat)
-sapply(renameddata, function(x) sum(x == "", na.rm = TRUE))
-renameddata[renameddata == ""] <- NA
-table(unlist(renameddata)) # See if unusual values appear
-str(renameddata)
-vis_dat(renameddata)
-vis_miss(renameddata)
-p <- ggplot(renameddata, aes(x = Control, y = Treatment_Norms)) + geom_point()
-ggplot(renameddata, aes(x = Control, y = Treatment_Norms)) + geom_point()
-test_data <- data.frame(Control = 1:10, Treatment_Norms = rnorm(10))
-ggplot(test_data, aes(x = Control, y = Treatment_Norms)) + geom_point()
-p <- ggplot(renameddata, aes(x = Control, y = Treatment_Consequence)) + geom_point()
-ggplot(renameddata, aes(x = Control, y = Treatment_Consequence)) + geom_point()
-test_data <- data.frame(Control = 1:10, Treatment_Consequence = rnorm(10))
-ggplot(test_data, aes(x = Control, y = Treatment_Consequence)) + geom_point() 
-p <- ggplot(renameddata, aes(x = Treatment_Norms, y = Treatment_Consequence)) + geom_point()
-ggplot(renameddata, aes(x = Treatment_Norms, y = Treatment_Consequence)) + geom_point()
-test_data <- data.frame(Treatment_Norms = 1:10, Treatment_Consequence = rnorm(10))
-ggplot(test_data, aes(x = Treatment_Norms, y = Treatment_Consequence)) + geom_point() 
-library(naniar)
-gg_miss_var(renameddata)
-tidyr::replace_na
-print(as_shadow(renameddata), width = Inf)
-survey_data <- renameddata
-glimpse(survey_data)
 
 ##Analysis
 
@@ -159,7 +125,7 @@ survey_data <- survey_data %>%
                                                             ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
 
 
-survey_data <- survey_data %>%
+survey_data_control <- survey_data %>%
   filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
   mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
 
@@ -175,12 +141,21 @@ survey_data <- survey_data %>%
   )
 
 
-model_control <- glm(exit_treaty ~ Control + Gender_Coded + Religious_Attendance_Coded + Political_Party_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+
+model_control <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
              data = survey_data, family = binomial(link = "logit"))
 
 summary(model_control)
 
+
+
+library(car)
+vif(model_control)
+
+table(survey_data$exit_treaty)
+
+
 library(margins)
-marginal_effects <- margins(model)
+marginal_effects <- margins(model_control)
 summary(marginal_effects)
 
