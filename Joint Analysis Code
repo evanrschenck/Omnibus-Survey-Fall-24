@@ -1,0 +1,98 @@
+load_or_install <- function(package) {
+  if (!require(package, character.only = TRUE)) {
+    install.packages(package)
+    library(package, character.only = TRUE)
+  }
+}
+
+load_or_install("dplyr")
+load_or_install("ggplot2")
+load_or_install("visdat")
+load_or_install("naniar")
+load_or_install("margins")
+library(dplyr)
+
+# Clean data: Select specific columns
+data_cleaned <- `Omnibus_Survey_Analysis` %>%
+  select(Q17, Q23, Q14, Q62...27, Q31, Q33, Q37, Q92...182, Q93...183, Q94, Q98, Q99, Q100)
+
+# Rename columns for better readability
+renameddata <- data_cleaned %>%
+  rename(
+    Political_Party = Q17,
+    Liberal_Conservative = Q23,
+    Election_Choice = Q14,
+    Political_Engagement = Q62...27,
+    National_Trust = Q92...182,
+    LocalGov_trust = Q93...183,
+    Trust_Others = Q94,
+    Control = Q98,
+    Treatment_Consequence = Q99,
+    Treatment_Norms = Q100,
+    Gender = Q31,
+    Racial_Identity = Q33,
+    Religious_Attendance = Q37
+  )
+  
+# Apply all filters in one step
+filtered_data <- renameddata %>%
+  filter(
+    Gender %in% c("Female", "Male", "Prefer not to disclose.", "None of the above. I identify myself as"),
+    Political_Party %in% c("Republican", "Democrat", "Independent", "Other", "Don't know"),
+    Racial_Identity %in% c("White", "Hispanic", "Black", "Multi-racial", "Native American", "Asian", "Other"),
+    Liberal_Conservative %in% c("Extremely Liberal", "Liberal", "Slightly Liberal", "Moderate/ Middle of the Road", "Slightly Conservative", "Conservative", "Extremely Conservative"),
+    Religious_Attendance %in% c("Never", "Once a year or less", "A few times a year", "Once or twice a month", "Once a week", "More than once a week")
+  )
+  
+survey_data <- filtered_data %>%
+  mutate(Gender_Coded = ifelse(Gender == "Male", 1, 
+                               ifelse(Gender == "Female", 2, NA)))
+                    
+survey_data <- survey_data %>%
+  mutate(Religious_Attendance_Coded = ifelse(Religious_Attendance== "Never", 1,
+                                            ifelse(Religious_Attendance== "Once a year or less", 2,
+                                                   ifelse(Religious_Attendance== "A Few times a year", 3,
+                                                          ifelse(Religious_Attendance== "Once or twice a month", 4,
+                                                                 ifelse(Religious_Attendance== "Once a week", 5,
+                                                                        ifelse(Religious_Attendance== "More than once a week", 6, NA))))) ))
+                                                                        
+survey_data <- survey_data %>%
+  mutate(Political_Party_Coded = ifelse(Political_Party== "Democrat", 1,
+                                        ifelse(Political_Party== "Independent", 2,
+                                               ifelse(Political_Party== "Other", 2,
+                                                      ifelse(Political_Party== "Don't Know", 2,
+                                                             ifelse(Political_Party== "Republican", 3, NA))))))
+                                                          
+survey_data <- survey_data %>%
+  mutate(National_Trust_Coded = ifelse(National_Trust== "Almost never", 1,
+                                       ifelse(National_Trust== "Only some of the time", 2,
+                                              ifelse(National_Trust== "Most of the time", 3,
+                                                     ifelse(National_Trust== "Just about always", 4, NA)))))
+                                                     
+survey_data <- survey_data %>%
+  mutate(LocalGov_Trust_Coded = ifelse(LocalGov_trust== "Almost never", 1,
+                                       ifelse(LocalGov_trust== "Only some of the time", 2,
+                                              ifelse(LocalGov_trust== "Most of the time", 3,
+                                                     ifelse(LocalGov_trust== "Just about always", 4, NA)))))
+                                                     
+survey_data <- survey_data %>%
+  mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1,
+                                       ifelse(Trust_Others== "2", 2,
+                                              ifelse(Trust_Others== "3", 3,
+                                                     ifelse(Trust_Others== "4", 4,
+                                                            ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
+                                                            
+survey_data_control <- survey_data %>%
+  filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
+  mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
+  
+table(survey_data$Control, useNA = "always")
+table(survey_data$exit_treaty, useNA = "always")
+
+model_control <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+             data = survey_data_control, family = binomial(link = "logit"))
+
+summary(model_control)
+                               
+
+                            
