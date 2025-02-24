@@ -93,6 +93,42 @@ model_control <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religi
              data = survey_data_control, family = binomial(link = "logit"))
 
 summary(model_control)
+
+library(margins)
+marginal_effects_control <- margins(model_control)
+summary(marginal_effects_control)
+
+
+survey_data_norms <- survey_data %>%
+  filter(Treatment_Norms %in% c("Leave the treaty", "Remain in the treaty")) %>%
+  mutate(exit_treaty = ifelse(Treatment_Norms == "Leave the treaty", 1, 0))
+  
+
+model_norms <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+             data = survey_data_norms, family = binomial(link = "logit"))
+
+summary(model_norms)
+
+library(margins)
+marginal_effects_norms <- margins(model_norms)
+summary(marginal_effects_norms)
+                               
+survey_data_consequence <- survey_data %>%
+  filter(Treatment_Consequence %in% c("Leave the treaty", "Remain in the treaty")) %>%
+  mutate(exit_treaty = ifelse(Treatment_Consequence == "Leave the treaty", 1, 0))
+  
+
+model_consequence <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+             data = survey_data_consequence, family = binomial(link = "logit"))
+
+summary(model_consequence)
+
+library(margins)
+marginal_effects_consequence <- margins(model_consequence)
+summary(marginal_effects_consequence)
+                               
+                            
+
                                
 
                             
