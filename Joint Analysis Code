@@ -284,4 +284,24 @@ marginal_effects_consequence_attendance_table <-tidy(marginal_effects_consequenc
 
 write.csv(marginal_effects_consequence_attendance_table, "marginal_effects_consequence_attendance_table.csv")
 
+marginal_effects_consequence_affiliation_table <-tidy(marginal_effects_consequence_religious_affiliation)
+
+write.csv(marginal_effects_consequence_affiliation_table, "marginal_effects_consequence_affiliation_table.csv")
+
+marginal_effects_consequence_both_table <- tidy(marginal_effects_consequence_both)
+
+write.csv(marginal_effects_consequence_both_table, "marginal_effects_consequence_both_table.csv")
+
+marginal_effects_norms_attendance_table <- tidy(marginal_effects_norms)
+
+write.csv(marginal_effects_norms_attendance_table, "marginal_effects_norms_attendancetable.csv")
+
+marginal_effects_norms_affiliation_table <- tidy(marginal_effects_norms_religious_affiliation)
+
+write.csv(marginal_effects_norms_affiliation_table, "marginal_effects_norms_affiliation_table.csv")
+
+marginal_effects_norms_both_table <- tidy(marginal_effects_norms_both)
+
+write.csv(marginal_effects_norms_both_table, "marginal_effects_norms_both_table.csv")
+
 
