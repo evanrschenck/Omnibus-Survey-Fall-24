@@ -305,3 +305,13 @@ marginal_effects_norms_both_table <- tidy(marginal_effects_norms_both)
 write.csv(marginal_effects_norms_both_table, "marginal_effects_norms_both_table.csv")
 
 
+## Marginal effects- control
+
+marginal_effects_control_attendance_table <- tidy(marginal_effects_control)
+write.csv(marginal_effects_control_attendance_table, "marginal_effects_control_attendance_table.csv") 
+
+marginal_effects_control_both_table <- tidy(marginal_effects_control_both)
+write.csv(marginal_effects_control_both_table, "marginal_effects_control_both_table.csv")
+
+marginal_effects_control_affiliation_table <- tidy(marginal_effects_control_religious_affiliation)
+write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_religious_affiliation_table.csv")
