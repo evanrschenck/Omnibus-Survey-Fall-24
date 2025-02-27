@@ -234,6 +234,8 @@ survey_data_both <- survey_data_both %>% mutate(Gender_Coded = ifelse(Gender == 
 survey_data_control_both <- survey_data_both %>% filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>% mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
 
 
+survey_data_both <- survey_data_both %>% mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1, ifelse(Trust_Others== "2", 2, ifelse(Trust_Others== "3", 3, ifelse(Trust_Others== "4", 4,  ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
+
 model_control_both <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, Religious_Attendance_Coded, data = survey_data_control_both, family = binomial(link = "logit")
 
 
