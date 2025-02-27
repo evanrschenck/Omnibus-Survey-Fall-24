@@ -277,3 +277,11 @@ marginal_effects_consequence_both <- margins(model_consequence_both)
 
 
 summary(marginal_effects_consequence_both)
+
+##Creating CSV for Marginal Affects Table
+
+marginal_effects_consequence_attendance_table <-tidy(marginal_effects_consequence)
+
+write.csv(marginal_effects_consequence_attendance_table, "marginal_effects_consequence_attendance_table.csv")
+
+
