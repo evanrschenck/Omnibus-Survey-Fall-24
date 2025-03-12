@@ -418,7 +418,7 @@ ggplot(marginal_effects_consequence_attendance_table, aes(x = term, y = estimate
   
 #Plot Marginal Effects- Religious Affiliation
  
-ggplot(marginal_effects_control_religious_affiliation, aes(x = term, y = estimate)) + 
+ggplot(marginal_effects_control_affiliation_table, aes(x = term, y = estimate)) + 
   geom_point(alpha = 0.5) + 
   geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), width = 0.2, color = "blue") + 
   labs(
@@ -429,7 +429,7 @@ ggplot(marginal_effects_control_religious_affiliation, aes(x = term, y = estimat
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
   
-  ggplot(marginal_effects_consequence_religious_affiliation, aes(x = term, y = estimate)) + 
+ggplot(marginal_effects_consequence_affiliation_table, aes(x = term, y = estimate)) + 
   geom_point(alpha = 0.5) + 
   geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), width = 0.2, color = "blue") + 
   labs(
@@ -439,6 +439,53 @@ ggplot(marginal_effects_control_religious_affiliation, aes(x = term, y = estimat
   ) + 
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+ggplot(marginal_effects_norms_affiliation_table, aes(x = term, y = estimate)) + 
+  geom_point(alpha = 0.5) + 
+  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), width = 0.2, color = "blue") + 
+  labs(
+    title = "Marginal Effects of Treatment Norms/Religious Affiliation on Treaty Exit", 
+    x = "Predictor",
+    y = "Estimated Marginal Effect"
+  ) + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+#Plot Marginal Effects for both
+
+ggplot(marginal_effects_control_both_table, aes(x = term, y = estimate)) + 
+  geom_point(alpha = 0.5) + 
+  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), width = 0.2, color = "blue") + 
+  labs(
+    title = "Marginal Effects of Treatment Control/Both Religion Variables on Treaty Exit", 
+    x = "Predictor",
+    y = "Estimated Marginal Effect"
+  ) + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+ggplot(marginal_effects_consequence_both_table, aes(x = term, y = estimate)) + 
+  geom_point(alpha = 0.5) + 
+  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), width = 0.2, color = "blue") + 
+  labs(
+    title = "Marginal Effects of Treatment Consequence/Both Religion Variables on Treaty Exit", 
+    x = "Predictor",
+    y = "Estimated Marginal Effect"
+  ) + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+ggplot(marginal_effects_norms_both_table, aes(x = term, y = estimate)) + 
+  geom_point(alpha = 0.5) + 
+  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), width = 0.2, color = "blue") + 
+  labs(
+    title = "Marginal Effects of Treatment Norms/Both Religious Variables on Treaty Exit", 
+    x = "Predictor",
+    y = "Estimated Marginal Effect"
+  ) + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
   
 
 
