@@ -134,7 +134,7 @@ summary(marginal_effects_attendance_consequence)
 data_cleaned_affiliation <- `Omnibus_Survey_Analysis` %>% select(Q17, Q23, Q14, Q62...27, Q31, Q33, Q92...182, Q93...183, Q94, Q98, Q99, Q100, Q131)
 
 
-renameddata_religious_affiliation <- data_cleaned_religious_affiliation %>%
+renameddata_affiliation <- data_cleaned_affiliation %>%
      rename(
          Political_Party = Q17,
          Liberal_Conservative = Q23,
@@ -151,7 +151,7 @@ renameddata_religious_affiliation <- data_cleaned_religious_affiliation %>%
          Religious_Affiliation  = Q131)
 
 
-filtered_data_religious_affiliation <- renameddata_religious_affiliation %>%
+filtered_data_affiliation <- renameddata_affiliation %>%
      filter(
          Gender %in% c("Female", "Male", "Prefer not to disclose.", "None of the above. I identify myself as"),
          Political_Party %in% c("Republican", "Democrat", "Independent", "Other", "Don't know"),
@@ -160,12 +160,12 @@ filtered_data_religious_affiliation <- renameddata_religious_affiliation %>%
          Religious_Affiliation %in% c("None", "Catholic", "Protestant", "Other", "Jewish", "Muslim"))
 
 
-survey_data_religious_affiliation <- filtered_data_religious_affiliation %>%
+survey_data_affiliation <- filtered_data_affiliation %>%
      mutate(Gender_Coded = ifelse(Gender == "Male", 1, 
                                   ifelse(Gender == "Female", 2, NA)))
 
 
-survey_data_religious_affiliation <- survey_data_religious_affiliation %>%
+survey_data_affiliation <- survey_data_affiliation %>%
      mutate(Religious_Affiliation_Coded = ifelse(Religious_Affiliation== "None", 0,
                                                 ifelse(Religious_Affiliation== "Catholic", 1,
                                                        ifelse(Religious_Affiliation== "Protestant", 1,
@@ -173,7 +173,7 @@ survey_data_religious_affiliation <- survey_data_religious_affiliation %>%
                                                                      ifelse(Religious_Affiliation== "Muslim", 1,                                                                            ifelse(Religious_Affiliation== "Other", 1, NA))))) ))
                             
 
-survey_data_religious_affiliation <- survey_data_religious_affiliation %>%
+survey_data_affiliation <- survey_data_affiliation %>%
      mutate(Political_Party_Coded = ifelse(Political_Party== "Democrat", 1,
                                            ifelse(Political_Party== "Independent", 2,
                                                   ifelse(Political_Party== "Other", 2,
@@ -181,21 +181,21 @@ survey_data_religious_affiliation <- survey_data_religious_affiliation %>%
                                                                 ifelse(Political_Party== "Republican", 3, NA))))))
 
 
-survey_data_religious_affiliation <- survey_data_religious_affiliation %>%
+survey_data_affiliation <- survey_data_affiliation %>%
      mutate(National_Trust_Coded = ifelse(National_Trust== "Almost never", 1,
                                           ifelse(National_Trust== "Only some of the time", 2,
                                                  ifelse(National_Trust== "Most of the time", 3,
                                                         ifelse(National_Trust== "Just about always", 4, NA)))))
 
 
-survey_data_religious_affiliation <- survey_data_religious_affiliation %>%
+survey_data_affiliation <- survey_data_affiliation %>%
      mutate(LocalGov_Trust_Coded = ifelse(LocalGov_trust== "Almost never", 1,
                                           ifelse(LocalGov_trust== "Only some of the time", 2,
                                                  ifelse(LocalGov_trust== "Most of the time", 3,
                                                         ifelse(LocalGov_trust== "Just about always", 4, NA)))))
 
 
-survey_data_religious_affiliation <- survey_data_religious_affiliation %>%
+survey_data_affiliation <- survey_data_affiliation %>%
      mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1,
                                         ifelse(Trust_Others== "2", 2,
                                                ifelse(Trust_Others== "3", 3,
@@ -203,58 +203,58 @@ survey_data_religious_affiliation <- survey_data_religious_affiliation %>%
                                                      ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
 
 
-survey_data_control_religious_affiliation <- survey_data_religious_affiliation %>%
+survey_data_control_affiliation <- survey_data_affiliation %>%
      filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
      mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
 
 
-model_control_religious_affiliation <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
-                      data = survey_data_control_religious_affiliation, family = binomial(link = "logit"))
+model_control_affiliation <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+                      data = survey_data_control_affiliation, family = binomial(link = "logit"))
 
 
-summary(model_control_religious_affiliation)
+summary(model_control_affiliation)
 
 
-marginal_effects_control_religious_affiliation <- margins(model_control_religious_affiliation)
+marginal_effects_control_affiliation <- margins(model_control_affiliation)
 
 
-summary(marginal_effects_control_religious_affiliation)
+summary(marginal_effects_control_affiliation)
 
 
-survey_data_norms_religious_affiliation <- survey_data_religious_affiliation %>%
+survey_data_norms_affiliation <- survey_data_affiliation %>%
      filter(Treatment_Norms %in% c("Leave the treaty", "Remain in the treaty")) %>%
      mutate(exit_treaty = ifelse(Treatment_Norms == "Leave the treaty", 1, 0))
 
 
-model_norms_religious_affiliation <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
-                    data = survey_data_norms_religious_affiliation, family = binomial(link = "logit"))
+model_norms_affiliation <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+                    data = survey_data_norms_affiliation, family = binomial(link = "logit"))
 
 
-summary(model_norms_religious_affiliation)
+summary(model_norms_affiliation)
 
 
-marginal_effects_norms_religious_affiliation <- margins(model_norms_religious_affiliation)
+marginal_effects_norms_affiliation <- margins(model_norms_affiliation)
 
 
-summary(marginal_effects_norms_religious_affiliation)
+summary(marginal_effects_norms_affiliation)
 
 
-survey_data_consequence_religious_affiliation <- survey_data_religious_affiliation %>%
+survey_data_consequence_affiliation <- survey_data_affiliation %>%
      filter(Treatment_Consequence %in% c("Leave the treaty", "Remain in the treaty")) %>%
      mutate(exit_treaty = ifelse(Treatment_Consequence == "Leave the treaty", 1, 0))
 
 
-model_consequence_religious_affiliation <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
-                          data = survey_data_consequence_religious_affiliation, family = binomial(link = "logit"))
+model_consequence_affiliation <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+                          data = survey_data_consequence_affiliation, family = binomial(link = "logit"))
 
 
-summary(model_consequence_religious_affiliation)
+summary(model_consequence_affiliation)
 
 
-marginal_effects_consequence_religious_affiliation <- margins(model_consequence_religious_affiliation)
+marginal_effects_consequence_affiliation <- margins(model_consequence_affiliation)
 
 
-summary(marginal_effects_consequence_religious_affiliation)
+summary(marginal_effects_consequence_affiliation)
 
 
 ## FOR BOTH RELIGIOUS ATTENDANCE AND RELIGIOUS AFFILIATION
@@ -349,41 +349,41 @@ summary(marginal_effects_consequence_both)
 
 ## Marginal effects- consequence
 
-marginal_effects_consequence_attendance_table <- tidy(marginal_effects_consequence)
+marginal_effects_consequence_attendance_table <- tidy(marginal_effects_attendance_consequence)
 write.csv(marginal_effects_consequence_attendance_table, "marginal_effects_consequence_attendance_table.csv") 
 
 marginal_effects_consequence_both_table <- tidy(marginal_effects_consequence_both)
 write.csv(marginal_effects_consequence_both_table, "marginal_effects_consequence_both_table.csv")
 
-marginal_effects_consequence_affiliation_table <- tidy(marginal_effects_consequence_religious_affiliation)
-write.csv(marginal_effects_consequence_affiliation_table, "marginal_effects_consequence_religious_affiliation_table.csv")
+marginal_effects_consequence_affiliation_table <- tidy(marginal_effects_consequence_affiliation)
+write.csv(marginal_effects_consequence_affiliation_table, "marginal_effects_consequence_affiliation_table.csv")
 
 ## Marginal effects- norms
 
-marginal_effects_norms_attendance_table <- tidy(marginal_effects_norms)
+marginal_effects_norms_attendance_table <- tidy(marginal_effects_attendance_norms)
 write.csv(marginal_effects_norms_attendance_table, "marginal_effects_norms_attendance_table.csv") 
 
 marginal_effects_norms_both_table <- tidy(marginal_effects_norms_both)
 write.csv(marginal_effects_norms_both_table, "marginal_effects_norms_both_table.csv")
 
-marginal_effects_norms_affiliation_table <- tidy(marginal_effects_norms_religious_affiliation)
-write.csv(marginal_effects_norms_affiliation_table, "marginal_effects_norms_religious_affiliation_table.csv")
+marginal_effects_norms_affiliation_table <- tidy(marginal_effects_norms_affiliation)
+write.csv(marginal_effects_norms_affiliation_table, "marginal_effects_norms_affiliation_table.csv")
 
 ## Marginal effects- control
 
-marginal_effects_control_attendance_table <- tidy(marginal_effects_control)
+marginal_effects_control_attendance_table <- tidy(marginal_effects_attendance_control)
 write.csv(marginal_effects_control_attendance_table, "marginal_effects_control_attendance_table.csv") 
 
 marginal_effects_control_both_table <- tidy(marginal_effects_control_both)
 write.csv(marginal_effects_control_both_table, "marginal_effects_control_both_table.csv")
 
-marginal_effects_control_affiliation_table <- tidy(marginal_effects_control_religious_affiliation)
-write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_religious_affiliation_table.csv")
+marginal_effects_control_affiliation_table <- tidy(marginal_effects_control_affiliation)
+write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_affiliation_table.csv")
 
 
 #Plot Marginal Effects- Religious Attendance
  
-ggplot(marginal_effects_control_attendance_table, aes(x = term, y = estimate)) + 
+ggplot(marginal_effects__attendance_control_table, aes(x = term, y = estimate)) + 
   geom_point(alpha = 0.5) + 
   geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), width = 0.2, color = "blue") + 
   labs(
