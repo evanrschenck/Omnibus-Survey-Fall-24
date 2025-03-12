@@ -15,11 +15,11 @@ load_or_install("broom")
 library(broom)
 
 # Clean data: Select specific columns
-data_cleaned <- `Omnibus_Survey_Analysis` %>%
+data_cleaned_attendance <- `Omnibus_Survey_Analysis` %>%
   select(Q17, Q23, Q14, Q62...27, Q31, Q33, Q37, Q92...182, Q93...183, Q94, Q98, Q99, Q100)
 
 # Rename columns for better readability
-renameddata <- data_cleaned %>%
+renameddata_attendance <- data_cleaned_attendance %>%
   rename(
     Political_Party = Q17,
     Liberal_Conservative = Q23,
@@ -46,11 +46,11 @@ filtered_data <- renameddata %>%
     Religious_Attendance %in% c("Never", "Once a year or less", "A few times a year", "Once or twice a month", "Once a week", "More than once a week")
   )
   
-survey_data <- filtered_data %>%
+survey_data_attendance <- filtered_data %>%
   mutate(Gender_Coded = ifelse(Gender == "Male", 1, 
                                ifelse(Gender == "Female", 2, NA)))
                     
-survey_data <- survey_data %>%
+survey_data_attendance <- survey_data_attendance %>%
   mutate(Religious_Attendance_Coded = ifelse(Religious_Attendance== "Never", 1,
                                             ifelse(Religious_Attendance== "Once a year or less", 2,
                                                    ifelse(Religious_Attendance== "A Few times a year", 3,
@@ -58,76 +58,76 @@ survey_data <- survey_data %>%
                                                                  ifelse(Religious_Attendance== "Once a week", 5,
                                                                         ifelse(Religious_Attendance== "More than once a week", 6, NA))))) ))
                                                                         
-survey_data <- survey_data %>%
+survey_data_attendance <- survey_data_attendance %>%
   mutate(Political_Party_Coded = ifelse(Political_Party== "Democrat", 1,
                                         ifelse(Political_Party== "Independent", 2,
                                                ifelse(Political_Party== "Other", 2,
                                                       ifelse(Political_Party== "Don't Know", 2,
                                                              ifelse(Political_Party== "Republican", 3, NA))))))
                                                           
-survey_data <- survey_data %>%
+survey_data_attendance <- survey_data_attendance %>%
   mutate(National_Trust_Coded = ifelse(National_Trust== "Almost never", 1,
                                        ifelse(National_Trust== "Only some of the time", 2,
                                               ifelse(National_Trust== "Most of the time", 3,
                                                      ifelse(National_Trust== "Just about always", 4, NA)))))
                                                      
-survey_data <- survey_data %>%
+survey_data_attendance <- survey_data_attendance %>%
   mutate(LocalGov_Trust_Coded = ifelse(LocalGov_trust== "Almost never", 1,
                                        ifelse(LocalGov_trust== "Only some of the time", 2,
                                               ifelse(LocalGov_trust== "Most of the time", 3,
                                                      ifelse(LocalGov_trust== "Just about always", 4, NA)))))
                                                      
-survey_data <- survey_data %>%
+survey_data_attendance <- survey_data_attendance %>%
   mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1,
                                        ifelse(Trust_Others== "2", 2,
                                               ifelse(Trust_Others== "3", 3,
                                                      ifelse(Trust_Others== "4", 4,
                                                             ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
                                                             
-survey_data_control <- survey_data %>%
+survey_data_attendance_control <- survey_data_attendance %>%
   filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
   mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
   
-table(survey_data$Control, useNA = "always")
-table(survey_data$exit_treaty, useNA = "always")
+table(survey_data_attendance$Control, useNA = "always")
+table(survey_data_attendance_control$exit_treaty, useNA = "always")
 
-model_control <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
-             data = survey_data_control, family = binomial(link = "logit"))
+model_attendance_control <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+             data = survey_data_attendance_control, family = binomial(link = "logit"))
 
-summary(model_control)
+summary(model_attendance_control)
 
 library(margins)
-marginal_effects_control <- margins(model_control)
-summary(marginal_effects_control)
+marginal_effects_attendance_control <- margins(model_attendance_control)
+summary(marginal_effects_attendance_control)
 
 
-survey_data_norms <- survey_data %>%
+survey_data_attendance_norms <- survey_data_attendance %>%
   filter(Treatment_Norms %in% c("Leave the treaty", "Remain in the treaty")) %>%
   mutate(exit_treaty = ifelse(Treatment_Norms == "Leave the treaty", 1, 0))
   
 
-model_norms <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
-             data = survey_data_norms, family = binomial(link = "logit"))
+model_attendance_norms <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+             data = survey_data_attendance_norms, family = binomial(link = "logit"))
 
-summary(model_norms)
+summary(model_attendance_norms)
 
 library(margins)
-marginal_effects_norms <- margins(model_norms)
-summary(marginal_effects_norms)
+marginal_effects_attendance_norms <- margins(model_attendance_norms)
+summary(marginal_effects_attendance_norms)
                                
-survey_data_consequence <- survey_data %>%
+survey_data_attendance_consequence <- survey_data_attendance %>%
   filter(Treatment_Consequence %in% c("Leave the treaty", "Remain in the treaty")) %>%
   mutate(exit_treaty = ifelse(Treatment_Consequence == "Leave the treaty", 1, 0))
   
 
-model_consequence <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
-             data = survey_data_consequence, family = binomial(link = "logit"))
+model_attendance_consequence <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Attendance_Coded + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded, 
+             data = survey_data_attendance_consequence, family = binomial(link = "logit"))
 
-summary(model_consequence)
+summary(model_attendance_consequence)
 
 library(margins)
-marginal_effects_consequence <- margins(model_consequence)
-summary(marginal_effects_consequence)
+marginal_effects_attendance_consequence <- margins(model_attendance_consequence)
+summary(marginal_effects_attendance_consequence)
 
 # FOR RELIGIOUS AFFILIATION
 
