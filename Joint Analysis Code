@@ -37,7 +37,7 @@ renameddata_attendance <- data_cleaned_attendance %>%
   )
   
 # Apply all filters in one step
-filtered_data <- renameddata %>%
+filtered_data_attendance <- renameddata_attendance %>%
   filter(
     Gender %in% c("Female", "Male", "Prefer not to disclose.", "None of the above. I identify myself as"),
     Political_Party %in% c("Republican", "Democrat", "Independent", "Other", "Don't know"),
@@ -46,7 +46,7 @@ filtered_data <- renameddata %>%
     Religious_Attendance %in% c("Never", "Once a year or less", "A few times a year", "Once or twice a month", "Once a week", "More than once a week")
   )
   
-survey_data_attendance <- filtered_data %>%
+survey_data_attendance <- filtered_data_attendance %>%
   mutate(Gender_Coded = ifelse(Gender == "Male", 1, 
                                ifelse(Gender == "Female", 2, NA)))
                     
@@ -131,7 +131,7 @@ summary(marginal_effects_attendance_consequence)
 
 # FOR RELIGIOUS AFFILIATION
 
-data_cleaned_religious_affiliation <- `Omnibus_Survey_Analysis` %>% select(Q17, Q23, Q14, Q62...27, Q31, Q33, Q92...182, Q93...183, Q94, Q98, Q99, Q100, Q131)
+data_cleaned_affiliation <- `Omnibus_Survey_Analysis` %>% select(Q17, Q23, Q14, Q62...27, Q31, Q33, Q92...182, Q93...183, Q94, Q98, Q99, Q100, Q131)
 
 
 renameddata_religious_affiliation <- data_cleaned_religious_affiliation %>%
