@@ -383,10 +383,8 @@ write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_
 
 #Plot Marginal Effects- Religious Attendance
  
- # Create a column that scales size by significance (e.g., using p-values)
 > marginal_effects_control_attendance_table$size_factor <- ifelse(
-+     marginal_effects_control_attendance_table$p.value < 0.05, 3, 1.5 # Larger for significant results
-+ )
++     marginal_effects_control_attendance_table$p.value < 0.05, 3, 1.5
 > 
 > ggplot(marginal_effects_control_attendance_table, aes(x = term, y = estimate)) + 
 +     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
@@ -398,15 +396,14 @@ write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_
 +         y = "Estimated Marginal Effect", 
 +         size = "Significance Level"
 +     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + # Adjust size scale
++     scale_size_continuous(range = c(1.5, 3), guide = "none")
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 
-> # Create a column that scales size by significance (e.g., using p-values)
 > marginal_effects_norms_attendance_table$size_factor <- ifelse(
-+     marginal_effects_norms_attendance_table$p.value < 0.05, 3, 1.5 # Larger for significant results
++     marginal_effects_norms_attendance_table$p.value < 0.05, 3, 1.5
 + )
 > 
 > ggplot(marginal_effects_norms_attendance_table, aes(x = term, y = estimate)) + 
@@ -419,15 +416,14 @@ write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_
 +         y = "Estimated Marginal Effect", 
 +         size = "Significance Level"
 +     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + # Adjust size scale
++     scale_size_continuous(range = c(1.5, 3), guide = "none")
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 
-> # Create a column that scales size by significance (e.g., using p-values)
 > marginal_effects_consequence_attendance_table$size_factor <- ifelse(
-+     marginal_effects_consequence_attendance_table$p.value < 0.05, 3, 1.5 # Larger for significant results
++     marginal_effects_consequence_attendance_table$p.value < 0.05, 3, 1.5 
 + )
 > 
 > ggplot(marginal_effects_consequence_attendance_table, aes(x = term, y = estimate)) + 
@@ -440,15 +436,16 @@ write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_
 +         y = "Estimated Marginal Effect", 
 +         size = "Significance Level"
 +     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + # Adjust size scale
++     scale_size_continuous(range = c(1.5, 3), guide = "none") 
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+
 #Plot Marginal Effects- Religious Affiliation
 
-> # Create a column that scales size by significance (e.g., using p-values)
+
 > marginal_effects_control_affiliation_table$size_factor <- ifelse(
-+     marginal_effects_control_affiliation_table$p.value < 0.05, 3, 1.5 # Larger for significant results
++     marginal_effects_control_affiliation_table$p.value < 0.05, 3, 1.5
 + )
 > 
 > ggplot(marginal_effects_control_affiliation_table, aes(x = term, y = estimate)) + 
@@ -461,21 +458,13 @@ write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_
 +         y = "Estimated Marginal Effect", 
 +         size = "Significance Level"
 +     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + # Adjust size scale
++     scale_size_continuous(range = c(1.5, 3), guide = "none") 
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
-> # Create a column that scales size by significance (e.g., using p-values)
 > marginal_effects_consequence_affiliation_table$size_factor <- ifelse(
-+     marginal_effects_consequence_affilation_table$p.value < 0.05, 3, 1.5 # Larger for significant results
-+ )
-Error: object 'marginal_effects_consequence_affilation_table' not found
-
-
-> # Create a column that scales size by significance (e.g., using p-values)
-> marginal_effects_consequence_affiliation_table$size_factor <- ifelse(
-+     marginal_effects_consequence_affiliation_table$p.value < 0.05, 3, 1.5 # Larger for significant results
++     marginal_effects_consequence_affiliation_table$p.value < 0.05, 3, 1.5
 + )
 > 
 > ggplot(marginal_effects_consequence_affiliation_table, aes(x = term, y = estimate)) + 
@@ -488,14 +477,13 @@ Error: object 'marginal_effects_consequence_affilation_table' not found
 +         y = "Estimated Marginal Effect", 
 +         size = "Significance Level"
 +     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + # Adjust size scale
++     scale_size_continuous(range = c(1.5, 3), guide = "none")
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
-> # Create a column that scales size by significance (e.g., using p-values)
 > marginal_effects_norms_affiliation_table$size_factor <- ifelse(
-+     marginal_effects_norms_affiliation_table$p.value < 0.05, 3, 1.5 # Larger for significant results
++     marginal_effects_norms_affiliation_table$p.value < 0.05, 3, 1.5 
 + )
 > 
 > ggplot(marginal_effects_norms_affiliation_table, aes(x = term, y = estimate)) + 
@@ -508,15 +496,15 @@ Error: object 'marginal_effects_consequence_affilation_table' not found
 +         y = "Estimated Marginal Effect", 
 +         size = "Significance Level"
 +     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + # Adjust size scale
++     scale_size_continuous(range = c(1.5, 3), guide = "none") 
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 #Plot Marginal Effects- Both Religious Variables
 
-> # Create a column that scales size by significance (e.g., using p-values)
+
 > marginal_effects_control_both_table$size_factor <- ifelse(
-+     marginal_effects_control_both_table$p.value < 0.05, 3, 1.5 # Larger for significant results
++     marginal_effects_control_both_table$p.value < 0.05, 3, 1.5
 + )
 > 
 > ggplot(marginal_effects_control_both_table, aes(x = term, y = estimate)) + 
@@ -529,15 +517,15 @@ Error: object 'marginal_effects_consequence_affilation_table' not found
 +         y = "Estimated Marginal Effect", 
 +         size = "Significance Level"
 +     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + # Adjust size scale
++     scale_size_continuous(range = c(1.5, 3), guide = "none") 
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 
-> # Create a column that scales size by significance (e.g., using p-values)
+
 > marginal_effects_consequence_both_table$size_factor <- ifelse(
-+     marginal_effects_consequence_both_table$p.value < 0.05, 3, 1.5 # Larger for significant results
++     marginal_effects_consequence_both_table$p.value < 0.05, 3, 1.5 
 + )
 > 
 > ggplot(marginal_effects_consequence_both_table, aes(x = term, y = estimate)) + 
@@ -550,15 +538,14 @@ Error: object 'marginal_effects_consequence_affilation_table' not found
 +         y = "Estimated Marginal Effect", 
 +         size = "Significance Level"
 +     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + # Adjust size scale
++     scale_size_continuous(range = c(1.5, 3), guide = "none") + 
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 
-> # Create a column that scales size by significance (e.g., using p-values)
 > marginal_effects_norms_both_table$size_factor <- ifelse(
-+     marginal_effects_norms_both_table$p.value < 0.05, 3, 1.5 # Larger for significant results
++     marginal_effects_norms_both_table$p.value < 0.05, 3, 1.5
 + )
 > 
 > ggplot(marginal_effects_norms_both_table, aes(x = term, y = estimate)) + 
@@ -571,7 +558,7 @@ Error: object 'marginal_effects_consequence_affilation_table' not found
 +         y = "Estimated Marginal Effect", 
 +         size = "Significance Level"
 +     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + # Adjust size scale
++     scale_size_continuous(range = c(1.5, 3), guide = "none")
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
