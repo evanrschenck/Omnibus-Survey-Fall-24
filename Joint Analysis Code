@@ -562,9 +562,28 @@ write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_
 +     theme_minimal() +
 +     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+Interaction Effects: Attendance and Trust Others
 
+interaction_model_attendance_trust_others <- glm( exit_treaty ~ Religious_Attendance_Coded * Trust_Others_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
 
+Interaction Effects: Attendance and National Trust
 
-  
+interaction_model_attendance_national_trust <- glm( exit_treaty ~ Religious_Attendance_Coded * National_Trust_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
+
+Interaction Effects: Attendance and Local Trust
+
+interaction_model_attendance_local_trust <- glm( exit_treaty ~ Religious_Attendance_Coded * LocalGov_Trust_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
+
+Interaction Effects: Political Party and Trust Others
+
+interaction_model_party_trust_others <- glm( exit_treaty ~ Political_Party_Coded * Trust_Others_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
+
+Interaction Effects: Political Party and National Trust
+
+interaction_model_party_national_trust <- glm( exit_treaty ~ Political_Party_Coded * National_Trust_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
+
+Interaction Effects: Political Party and Local Trust
+
+interaction_model_party_local_trust <- glm( exit_treaty ~ Political_Party_Coded * LocalGov_Trust_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
 
 
