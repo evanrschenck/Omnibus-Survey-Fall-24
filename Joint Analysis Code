@@ -84,6 +84,32 @@ survey_data_attendance <- survey_data_attendance %>%
                                                      ifelse(Trust_Others== "4", 4,
                                                             ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
                                                             
+survey_data_attendance <- survey_data_attendance %>%
+  mutate(Trust_Others_CodedHighLow = ifelse(Trust_Others== "1- You can't be too careful", 0,
+                                       ifelse(Trust_Others== "2", 0,
+                                              ifelse(Trust_Others== "3", 0,
+                                                     ifelse(Trust_Others== "4", 1,
+                                                            ifelse(Trust_Others== "5- Most people can be trusted", 1, NA))))))
+                                                            
+survey_data_attendance <- survey_data_attendance %>%
+  mutate(LocalGov_Trust_CodedHighLow = ifelse(LocalGov_trust== "Almost never", 0,
+                                       ifelse(LocalGov_trust== "Only some of the time", 0,
+                                              ifelse(LocalGov_trust== "Most of the time", 1,
+                                                     ifelse(LocalGov_trust== "Just about always", 1, NA)))))
+                                                     
+survey_data_attendance <- survey_data_attendance %>%
+  mutate(National_Trust_CodedHighLow = ifelse(National_Trust== "Almost never", 0,
+                                       ifelse(National_Trust== "Only some of the time", 0,
+                                              ifelse(National_Trust== "Most of the time", 1,
+                                                     ifelse(National_Trust== "Just about always", 1, NA)))))
+survey_data_attendance <- survey_data_attendance %>%
+  mutate(Religious_HighLow_Coded = ifelse(Religious_Attendance== "Never", 0,
+                                            ifelse(Religious_Attendance== "Once a year or less", 0,
+                                                   ifelse(Religious_Attendance== "A Few times a year", 0,
+                                                          ifelse(Religious_Attendance== "Once or twice a month", 0,
+                                                                 ifelse(Religious_Attendance== "Once a week", 1,
+                                                                        ifelse(Religious_Attendance== "More than once a week", 1, NA))))) ))
+                                                            
 survey_data_attendance_control <- survey_data_attendance %>%
   filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
   mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
@@ -201,7 +227,25 @@ survey_data_affiliation <- survey_data_affiliation %>%
                                                ifelse(Trust_Others== "3", 3,
                                                      ifelse(Trust_Others== "4", 4,
                                                      ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
+                                              
+survey_data_affiliation <- survey_data_affiliation %>%
+     mutate(National_Trust_CodedHighLow = ifelse(National_Trust== "Almost never", 0,
+                                          ifelse(National_Trust== "Only some of the time", 0,
+                                                 ifelse(National_Trust== "Most of the time", 1,
+                                                        ifelse(National_Trust== "Just about always", 1, NA)))))
+                                                        
+survey_data_affiliation <- survey_data_affiliation %>%
+     mutate(LocalGov_Trust_CodedHighLow = ifelse(LocalGov_trust== "Almost never", 0,
+                                          ifelse(LocalGov_trust== "Only some of the time", 0,
+                                                 ifelse(LocalGov_trust== "Most of the time", 1,
+                                                        ifelse(LocalGov_trust== "Just about always", 1, NA)))))
 
+survey_data_affiliation <- survey_data_affiliation %>%
+     mutate(Trust_Others_CodedHighLow = ifelse(Trust_Others== "1- You can't be too careful", 0,
+                                        ifelse(Trust_Others== "2", 0,
+                                               ifelse(Trust_Others== "3", 0,
+                                                     ifelse(Trust_Others== "4", 1,
+                                                     ifelse(Trust_Others== "5- Most people can be trusted", 1, NA))))))
 
 survey_data_control_affiliation <- survey_data_affiliation %>%
      filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
@@ -296,6 +340,20 @@ survey_data_both <- survey_data_both %>% mutate(LocalGov_Trust_Coded = ifelse(Lo
 
 survey_data_both <- survey_data_both %>% mutate(Trust_Others_Coded = ifelse(Trust_Others== "1- You can't be too careful", 1, ifelse(Trust_Others== "2", 2, ifelse(Trust_Others== "3", 3, ifelse(Trust_Others== "4", 4, ifelse(Trust_Others== "5- Most people can be trusted", 5, NA))))))
 
+survey_data_both <- survey_data_both %>% mutate(National_Trust_CodedHighLow = ifelse(National_Trust== "Almost never", 0, ifelse(National_Trust== "Only some of the time", 0, ifelse(National_Trust== "Most of the time", 1, ifelse(National_Trust== "Just about always", 1, NA)))))
+
+survey_data_both <- survey_data_both %>% mutate(LocalGov_Trust_CodedHighLow = ifelse(LocalGov_trust== "Almost never", 0, ifelse(LocalGov_trust== "Only some of the time", 0, ifelse(LocalGov_trust== "Most of the time", 1, ifelse(LocalGov_trust== "Just about always", 1, NA)))))
+
+survey_data_both <- survey_data_both %>% mutate(Trust_Others_CodedHighLow = ifelse(Trust_Others== "1- You can't be too careful", 0, ifelse(Trust_Others== "2", 0, ifelse(Trust_Others== "3", 0, ifelse(Trust_Others== "4", 1, ifelse(Trust_Others== "5- Most people can be trusted", 1, NA))))))
+
+survey_data_both <- survey_data_both %>%
+  mutate(Religious_HighLow = ifelse(Religious_Attendance== "Never", 0,
+                                            ifelse(Religious_Attendance== "Once a year or less", 0,
+                                                   ifelse(Religious_Attendance== "A Few times a year", 0,
+                                                          ifelse(Religious_Attendance== "Once or twice a month",0,
+                                                                 ifelse(Religious_Attendance== "Once a week", 1,
+                                                                        ifelse(Religious_Attendance== "More than once a week", 1, NA)))))))
+
 
 survey_data_both <- survey_data_both %>% mutate(Gender_Coded = ifelse(Gender == "Male", 1, ifelse(Gender == "Female", 2, NA)))
 
@@ -381,209 +439,147 @@ marginal_effects_control_affiliation_table <- tidy(marginal_effects_control_affi
 write.csv(marginal_effects_control_affiliation_table, "marginal_effects_control_affiliation_table.csv")
 
 
-#Plot Marginal Effects- Religious Attendance
- 
-> marginal_effects_control_attendance_table$size_factor <- ifelse(
-+     marginal_effects_control_attendance_table$p.value < 0.05, 3, 1.5
-> 
-> ggplot(marginal_effects_control_attendance_table, aes(x = term, y = estimate)) + 
-+     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
-+     geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-+                   width = 0.2, color = "blue") + 
-+     labs(
-+         title = "Marginal Effects of Control/Religious Attendance on Treaty Exit", 
-+         x = "Predictor", 
-+         y = "Estimated Marginal Effect", 
-+         size = "Significance Level"
-+     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none")
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# Load necessary library
+library(ggplot2)
 
+# Plot Marginal Effects - Religious Attendance
+marginal_effects_control_attendance_table$size_factor <- ifelse(
+    marginal_effects_control_attendance_table$p.value < 0.05, 3, 1.5
+)
 
+ggplot(marginal_effects_control_attendance_table, aes(x = term, y = estimate)) + 
+    geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
+    geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  width = 0.2, color = "blue") + 
+    labs(
+        title = "Marginal Effects of Control/Religious Attendance on Treaty Exit", 
+        x = "Predictor", 
+        y = "Estimated Marginal Effect"
+    ) + 
+    scale_size_continuous(range = c(1.5, 3), guide = "none") + 
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-> marginal_effects_norms_attendance_table$size_factor <- ifelse(
-+     marginal_effects_norms_attendance_table$p.value < 0.05, 3, 1.5
-+ )
-> 
-> ggplot(marginal_effects_norms_attendance_table, aes(x = term, y = estimate)) + 
-+     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
-+     geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-+                   width = 0.2, color = "blue") + 
-+     labs(
-+         title = "Marginal Effects of Norms/Religious Attendance on Treaty Exit", 
-+         x = "Predictor", 
-+         y = "Estimated Marginal Effect", 
-+         size = "Significance Level"
-+     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none")
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+marginal_effects_norms_attendance_table$size_factor <- ifelse(
+    marginal_effects_norms_attendance_table$p.value < 0.05, 3, 1.5
+)
 
+ggplot(marginal_effects_norms_attendance_table, aes(x = term, y = estimate)) + 
+    geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
+    geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  width = 0.2, color = "blue") + 
+    labs(
+        title = "Marginal Effects of Norms/Religious Attendance on Treaty Exit", 
+        x = "Predictor", 
+        y = "Estimated Marginal Effect"
+    ) + 
+    scale_size_continuous(range = c(1.5, 3), guide = "none") + 
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+marginal_effects_consequence_attendance_table$size_factor <- ifelse(
+    marginal_effects_consequence_attendance_table$p.value < 0.05, 3, 1.5 
+)
 
-> marginal_effects_consequence_attendance_table$size_factor <- ifelse(
-+     marginal_effects_consequence_attendance_table$p.value < 0.05, 3, 1.5 
-+ )
-> 
-> ggplot(marginal_effects_consequence_attendance_table, aes(x = term, y = estimate)) + 
-+     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
-+     geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-+                   width = 0.2, color = "blue") + 
-+     labs(
-+         title = "Marginal Effects of Treatment Consequence/Religious Attendance on Treaty Exit", 
-+         x = "Predictor", 
-+         y = "Estimated Marginal Effect", 
-+         size = "Significance Level"
-+     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") 
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplot(marginal_effects_consequence_attendance_table, aes(x = term, y = estimate)) + 
+    geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
+    geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  width = 0.2, color = "blue") + 
+    labs(
+        title = "Marginal Effects of Treatment Consequence/Religious Attendance on Treaty Exit", 
+        x = "Predictor", 
+        y = "Estimated Marginal Effect"
+    ) + 
+    scale_size_continuous(range = c(1.5, 3), guide = "none") + 
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+# Plot Marginal Effects - Religious Affiliation
+marginal_effects_control_affiliation_table$size_factor <- ifelse(
+    marginal_effects_control_affiliation_table$p.value < 0.05, 3, 1.5
+)
 
-#Plot Marginal Effects- Religious Affiliation
+ggplot(marginal_effects_control_affiliation_table, aes(x = term, y = estimate)) + 
+    geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
+    geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  width = 0.2, color = "blue") + 
+    labs(
+        title = "Marginal Effects of Control/Religious Affiliation on Treaty Exit", 
+        x = "Predictor", 
+        y = "Estimated Marginal Effect"
+    ) + 
+    scale_size_continuous(range = c(1.5, 3), guide = "none") + 
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+marginal_effects_consequence_affiliation_table$size_factor <- ifelse(
+    marginal_effects_consequence_affiliation_table$p.value < 0.05, 3, 1.5
+)
 
-> marginal_effects_control_affiliation_table$size_factor <- ifelse(
-+     marginal_effects_control_affiliation_table$p.value < 0.05, 3, 1.5
-+ )
-> 
-> ggplot(marginal_effects_control_affiliation_table, aes(x = term, y = estimate)) + 
-+     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
-+     geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-+                   width = 0.2, color = "blue") + 
-+     labs(
-+         title = "Marginal Effects of Control/Religious Affiliation on Treaty Exit", 
-+         x = "Predictor", 
-+         y = "Estimated Marginal Effect", 
-+         size = "Significance Level"
-+     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") 
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplot(marginal_effects_consequence_affiliation_table, aes(x = term, y = estimate)) + 
+    geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
+    geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  width = 0.2, color = "blue") + 
+    labs(
+        title = "Marginal Effects of Treatment Consequence/Religious Affiliation on Treaty Exit", 
+        x = "Predictor", 
+        y = "Estimated Marginal Effect"
+    ) + 
+    scale_size_continuous(range = c(1.5, 3), guide = "none") + 
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+# Plot Marginal Effects - Both Religious Variables
+marginal_effects_control_both_table$size_factor <- ifelse(
+    marginal_effects_control_both_table$p.value < 0.05, 3, 1.5
+)
 
-> marginal_effects_consequence_affiliation_table$size_factor <- ifelse(
-+     marginal_effects_consequence_affiliation_table$p.value < 0.05, 3, 1.5
-+ )
-> 
-> ggplot(marginal_effects_consequence_affiliation_table, aes(x = term, y = estimate)) + 
-+     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
-+     geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-+                   width = 0.2, color = "blue") + 
-+     labs(
-+         title = "Marginal Effects of Treatment Consequence/Religious Affiliation on Treaty Exit", 
-+         x = "Predictor", 
-+         y = "Estimated Marginal Effect", 
-+         size = "Significance Level"
-+     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none")
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplot(marginal_effects_control_both_table, aes(x = term, y = estimate)) + 
+    geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
+    geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                  width = 0.2, color = "blue") + 
+    labs(
+        title = "Marginal Effects of Control/Both Religion Variables on Treaty Exit", 
+        x = "Predictor", 
+        y = "Estimated Marginal Effect"
+    ) + 
+    scale_size_continuous(range = c(1.5, 3), guide = "none") + 
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+# Interaction Effects
+interaction_model_attendance_trust_others <- glm(
+    exit_treaty ~ Religious_Attendance_Coded * Trust_Others_Coded, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
 
-> marginal_effects_norms_affiliation_table$size_factor <- ifelse(
-+     marginal_effects_norms_affiliation_table$p.value < 0.05, 3, 1.5 
-+ )
-> 
-> ggplot(marginal_effects_norms_affiliation_table, aes(x = term, y = estimate)) + 
-+     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
-+     geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-+                   width = 0.2, color = "blue") + 
-+     labs(
-+         title = "Marginal Effects of Treatment Norms/Religious Affiliation on Treaty Exit", 
-+         x = "Predictor", 
-+         y = "Estimated Marginal Effect", 
-+         size = "Significance Level"
-+     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") 
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+interaction_model_attendance_national_trust <- glm(
+    exit_treaty ~ Religious_Attendance_Coded * National_Trust_Coded, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
 
-#Plot Marginal Effects- Both Religious Variables
+interaction_model_attendance_local_trust <- glm(
+    exit_treaty ~ Religious_Attendance_Coded * LocalGov_Trust_Coded, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
 
+interaction_model_party_trust_others <- glm(
+    exit_treaty ~ Political_Party_Coded * Trust_Others_Coded, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
 
-> marginal_effects_control_both_table$size_factor <- ifelse(
-+     marginal_effects_control_both_table$p.value < 0.05, 3, 1.5
-+ )
-> 
-> ggplot(marginal_effects_control_both_table, aes(x = term, y = estimate)) + 
-+     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
-+     geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-+                   width = 0.2, color = "blue") + 
-+     labs(
-+         title = "Marginal Effects of Control/Both Religion Variables on Treaty Exit", 
-+         x = "Predictor", 
-+         y = "Estimated Marginal Effect", 
-+         size = "Significance Level"
-+     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") 
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
+interaction_model_party_national_trust <- glm(
+    exit_treaty ~ Political_Party_Coded * National_Trust_Coded, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
 
-
-
-
-> marginal_effects_consequence_both_table$size_factor <- ifelse(
-+     marginal_effects_consequence_both_table$p.value < 0.05, 3, 1.5 
-+ )
-> 
-> ggplot(marginal_effects_consequence_both_table, aes(x = term, y = estimate)) + 
-+     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
-+     geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-+                   width = 0.2, color = "blue") + 
-+     labs(
-+         title = "Marginal Effects of Treatment Consequence/Both Religious Variables on Treaty Exit", 
-+         x = "Predictor", 
-+         y = "Estimated Marginal Effect", 
-+         size = "Significance Level"
-+     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none") + 
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
-
-> marginal_effects_norms_both_table$size_factor <- ifelse(
-+     marginal_effects_norms_both_table$p.value < 0.05, 3, 1.5
-+ )
-> 
-> ggplot(marginal_effects_norms_both_table, aes(x = term, y = estimate)) + 
-+     geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
-+     geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
-+                   width = 0.2, color = "blue") + 
-+     labs(
-+         title = "Marginal Effects of Treatment Norms/Both Religious Variables on Treaty Exit", 
-+         x = "Predictor", 
-+         y = "Estimated Marginal Effect", 
-+         size = "Significance Level"
-+     ) + 
-+     scale_size_continuous(range = c(1.5, 3), guide = "none")
-+     theme_minimal() +
-+     theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-Interaction Effects: Attendance and Trust Others
-
-interaction_model_attendance_trust_others <- glm( exit_treaty ~ Religious_Attendance_Coded * Trust_Others_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
-
-Interaction Effects: Attendance and National Trust
-
-interaction_model_attendance_national_trust <- glm( exit_treaty ~ Religious_Attendance_Coded * National_Trust_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
-
-Interaction Effects: Attendance and Local Trust
-
-interaction_model_attendance_local_trust <- glm( exit_treaty ~ Religious_Attendance_Coded * LocalGov_Trust_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
-
-Interaction Effects: Political Party and Trust Others
-
-interaction_model_party_trust_others <- glm( exit_treaty ~ Political_Party_Coded * Trust_Others_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
-
-Interaction Effects: Political Party and National Trust
-
-interaction_model_party_national_trust <- glm( exit_treaty ~ Political_Party_Coded * National_Trust_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
-
-Interaction Effects: Political Party and Local Trust
-
-interaction_model_party_local_trust <- glm( exit_treaty ~ Political_Party_Coded * LocalGov_Trust_Coded, data = survey_data_attendance, family = binomial(link = "logit"))
-
-
+interaction_model_party_local_trust <- glm(
+    exit_treaty ~ Political_Party_Coded * LocalGov_Trust_Coded, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
