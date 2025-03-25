@@ -5,3 +5,6 @@ Joint Analysis Code:
   - Models are made for control, treatment norms, and treatment consequence
   - Marginal effects are created and plotted for control, treatment norms, treatment consequence
   - Interaction effects and models are created for religious attendance with three levels of trust (local, national, and others) and political party variables with three levels of trust
+
+List of Models:
+- Organized list of nine names of models for religious attendance/religious affiliation/both with control/treatment norms/treatment consequence
