@@ -583,3 +583,26 @@ interaction_model_party_local_trust <- glm(
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
+
+##INTERACTION MARGINAL EFFECTS
+
+interaction_effects_party_local_trust <- margins(
+     interaction_model_party_local_trust, 
+     at = list(LocalGov_Trust_Coded = seq(1, 4, by = 0.5)))
+summary(interaction_effects_party_local_trust)
+
+interaction_effects_party_national_trust <- margins(interaction_model_party_national_trust, at = list(National_Trust_Coded = seq(1, 4, by = 0.5)))
+> summary(interaction_effects_party_national_trust)
+
+interaction_effects_party_trust_others <- margins(interaction_model_party_trust_others, at = list(Trust_Others_Coded = seq(1, 4, by = 0.5)))
+> summary(interaction_effects_party_trust_others)
+
+interaction_effects_attendance_local_trust <- margins(interaction_model_attendance_local_trust, at = list(LocalGov_Trust_Coded = seq(1, 4, by = 0.5)))
+> summary(interaction_effects_attendance_local_trust)
+
+interaction_effects_attendance_national_trust <- margins(interaction_model_attendance_national_trust, at = list(National_Trust_Coded = seq(1, 4, by = 0.5)))
+>  summary(interaction_effects_attendance_national_trust)
+
+interaction_effects_attendance_trust_others <- margins(interaction_model_attendance_trust_others, at = list(Trust_Others_Coded = seq(1, 4, by = 0.5)))
+>   summary(interaction_effects_attendance_trust_others)
+
