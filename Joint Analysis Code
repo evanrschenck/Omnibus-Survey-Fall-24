@@ -584,25 +584,30 @@ interaction_model_party_local_trust <- glm(
     family = binomial(link = "logit")
 )
 
-##INTERACTION MARGINAL EFFECTS
+##Additional regressions: High/Low Trust and High/Low Religion
 
-interaction_effects_party_local_trust <- margins(
-     interaction_model_party_local_trust, 
-     at = list(LocalGov_Trust_Coded = seq(1, 4, by = 0.5)))
-summary(interaction_effects_party_local_trust)
+model_control_HighTrust <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_CodedHighLow + LocalGov_Trust_CodedHighLow + Trust_Others_CodedHighLow + Religious_Attendance_Coded, data = survey_data_control_both, family = binomial(link = "logit"))
 
-interaction_effects_party_national_trust <- margins(interaction_model_party_national_trust, at = list(National_Trust_Coded = seq(1, 4, by = 0.5)))
-> summary(interaction_effects_party_national_trust)
+summary(model_control_HighTrust)
 
-interaction_effects_party_trust_others <- margins(interaction_model_party_trust_others, at = list(Trust_Others_Coded = seq(1, 4, by = 0.5)))
-> summary(interaction_effects_party_trust_others)
+model_control_HighReligion <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded  + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded + Religious_HighLow, data = survey_data_control_both, family = binomial(link = "logit"))
 
-interaction_effects_attendance_local_trust <- margins(interaction_model_attendance_local_trust, at = list(LocalGov_Trust_Coded = seq(1, 4, by = 0.5)))
-> summary(interaction_effects_attendance_local_trust)
+summary(model_control_HighReligion)
 
-interaction_effects_attendance_national_trust <- margins(interaction_model_attendance_national_trust, at = list(National_Trust_Coded = seq(1, 4, by = 0.5)))
->  summary(interaction_effects_attendance_national_trust)
+model_consequence_HighTrust <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_CodedHighLow + LocalGov_Trust_CodedHighLow + Trust_Others_CodedHighLow + Religious_Attendance_Coded, data = survey_data_consequence_both, family = binomial(link = "logit"))
 
-interaction_effects_attendance_trust_others <- margins(interaction_model_attendance_trust_others, at = list(Trust_Others_Coded = seq(1, 4, by = 0.5)))
->   summary(interaction_effects_attendance_trust_others)
+summary(model_consequence_HighTrust)
+
+model_consequence_HighReligion <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded  + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded + Religious_HighLow, data = survey_data_consequence_both, family = binomial(link = "logit"))
+
+summary(model_consequence_HighReligion)
+
+model_norms_HighTrust <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_CodedHighLow + LocalGov_Trust_CodedHighLow + Trust_Others_CodedHighLow + Religious_Attendance_Coded, data = survey_data_norms_both, family = binomial(link = "logit"))
+
+summary(model_norms_HighTrust)
+
+model_norms_HighReligion <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded  + National_Trust_Coded + LocalGov_Trust_Coded + Trust_Others_Coded + Religious_HighLow, data = survey_data_norms_both, family = binomial(link = "logit"))
+
+summary(model_norms_HighReligion)
+
 
