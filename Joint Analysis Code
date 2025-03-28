@@ -584,6 +584,31 @@ interaction_model_party_local_trust <- glm(
     family = binomial(link = "logit")
 )
 
+INTERACTION MARRGINAL EFFECTS
+interaction_effects_attendance_trust_others <- margins(interaction_model_attendance_trust_others, at = list(Trust_Others_Coded = seq(1, 4, by = 0.5)))
+interaction_effects_attendance_trust_others_table <- tidy(interaction_effects_attendance_trust_others)
+write.csv(interaction_effects_attendance_trust_others_table, "interaction_effects_attendance_trust_others_table.csv", row.names = FALSE)
+
+interaction_effects_party_local_trust <- margins(interaction_model_party_local_trust, at = list(LocalGov_Trust_Coded = seq(1, 4, by = 0.5)))
+interaction_effects_party_local_trust_table <- tidy(interaction_effects_party_local_trust)
+write.csv(interaction_effects_party_local_trust_table, "~/Desktop/interaction_effects_party_local_trust_table.csv", row.names = FALSE)
+
+interaction_effects_party_national_trust <- margins(interaction_model_party_national_trust, at = list(National_Trust_Coded = seq(1, 4, by = 0.5)))
+interaction_effects_party_national_trust_table <- tidy(interaction_effects_party_national_trust)
+write.csv(interaction_effects_party_national_trust_table, "~/Desktop/interaction_effects_party_national_trust_table.csv", row.names = FALSE)
+
+interaction_effects_party_trust_others <- margins(interaction_model_party_trust_others, at = list(Trust_Others_Coded = seq(1, 4, by = 0.5)))
+interaction_effects_party_trust_others_table <- tidy(interaction_effects_party_trust_others)
+write.csv(interaction_effects_party_trust_others_table, "~/Desktop/interaction_effects_party_trust_others_table.csv", row.names = FALSE)
+
+interaction_effects_attendance_local_trust <- margins(interaction_model_attendance_local_trust, at = list(LocalGov_Trust_Coded = seq(1, 4, by = 0.5)))
+interaction_effects_attendance_local_trust_table <- tidy(interaction_effects_attendance_local_trust)
+write.csv(interaction_effects_attendance_local_trust_table, "~/Desktop/interaction_effects_attendance_local_trust_table.csv", row.names = FALSE)
+
+interaction_effects_attendance_national_trust <- margins(interaction_model_attendance_national_trust, at = list(National_Trust_Coded = seq(1, 4, by = 0.5)))
+interaction_effects_attendance_national_trust_table <- tidy(interaction_effects_attendance_national_trust)
+write.csv(interaction_effects_attendance_national_trust_table, "~/Desktop/interaction_effects_attendance_national_trust_table.csv", row.names = FALSE)
+
 ##Additional regressions: High/Low Trust and High/Low Religion
 
 model_control_HighTrust <- glm(exit_treaty ~ Gender_Coded + Political_Party_Coded + Religious_Affiliation_Coded + National_Trust_CodedHighLow + LocalGov_Trust_CodedHighLow + Trust_Others_CodedHighLow + Religious_Attendance_Coded, data = survey_data_control_both, family = binomial(link = "logit"))
