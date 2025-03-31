@@ -563,6 +563,38 @@ ggplot(marginal_effects_control_both_table, aes(x = term, y = estimate)) +
     theme_minimal() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+
+marginal_effects_consequence_both_table$size_factor <- ifelse(
+ marginal_effects_consequence_both_table$p.value < 0.05, 3, 1.5)
+
+ ggplot(marginal_effects_consequence_both_table, aes(x = term, y = estimate)) + 
+  geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
+   geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                width = 0.2, color = "blue") + 
+  labs(
+    title = "Marginal Effects of Treatment Consequence/Both Religion Variables on Treaty Exit", 
+     x = "Predictor", 
+     y = "Estimated Marginal Effect") + 
+  scale_size_continuous(range = c(1.5, 3), guide = "none") + 
+ theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+marginal_effects_norms_both_table$size_factor <- ifelse(
+  marginal_effects_norms_both_table$p.value < 0.05, 3, 1.5)
+
+ggplot(marginal_effects_norms_both_table, aes(x = term, y = estimate)) + 
+  geom_point(aes(size = size_factor), alpha = 0.7, color = "blue") + 
+ geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+               width = 0.2, color = "blue") + 
+   labs(
+   title = "Marginal Effects of Treatment Norms/Both Religion Variables on Treaty Exit", 
+    x = "Predictor", 
+    y = "Estimated Marginal Effect") + 
+ scale_size_continuous(range = c(1.5, 3), guide = "none") + 
+   theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
 # Interaction Effects
 interaction_model_attendance_trust_others <- glm(
     exit_treaty ~ Religious_Attendance * Trust_Others, 
