@@ -593,6 +593,43 @@ ggplot(marginal_effects_norms_both_table, aes(x = term, y = estimate)) +
  scale_size_continuous(range = c(1.5, 3), guide = "none") + 
    theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+##Making Interaction Models
+interaction_model_attendance_trust_others <- glm(
+    exit_treaty ~ Religious_Attendance * Trust_Others, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_attendance_national_trust <- glm(
+    exit_treaty ~ Religious_Attendance * National_Trust, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_attendance_local_trust <- glm(
+    exit_treaty ~ Religious_Attendance * LocalGov_Trust, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_party_trust_others <- glm(
+    exit_treaty ~ Political_Party * Trust_Others, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_party_national_trust <- glm(
+    exit_treaty ~ Political_Party * National_Trust, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_party_local_trust <- glm(
+    exit_treaty ~ Political_Party * LocalGov_Trust, 
+    data = survey_data_attendance_control, 
+    family = binomial(link = "logit")
+)
 
 
 # Interaction Effects
@@ -672,3 +709,14 @@ demographic_data <- demographic_data %>%
     Racial_Identity = Q33,
     Religious_Affiliation = Q131
   )
+  
+  
+
+
+
+
+
+
+
+
+
