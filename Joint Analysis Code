@@ -659,3 +659,16 @@ summary(model_norms_HighTrust)
 model_norms_HighReligion <- glm(exit_treaty ~ Gender + Political_Party  + National_Trust + LocalGov_Trust + Trust_Others + Religious_HighLow, data = survey_data_norms_both, family = binomial(link = "logit"))
 
 summary(model_norms_HighReligion)
+
+
+##Demographics Summary Statistics
+demographic_data <- `Omnibus_Survey_Analysis` %>%
+  select(Q17, Q31, Q33, Q131)
+
+demographic_data <- demographic_data %>%
+  rename(
+    Political_Party = Q17,
+    Gender = Q31,
+    Racial_Identity = Q33,
+    Religious_Affiliation = Q131
+  )
