@@ -51,7 +51,7 @@ survey_data_attendance <- filtered_data_attendance %>%
                                ifelse(Gender_noncoded == "Female", 2, NA)))
                     
 survey_data_attendance <- survey_data_attendance %>%
-  mutate(Religious_Attendance = ifelse(Religious_Attendance_noncoded== "Never", 1,
+  mutate(Religious_Attendance_High6_Low1 = ifelse(Religious_Attendance_noncoded== "Never", 1,
                                             ifelse(Religious_Attendance_noncoded== "Once a year or less", 2,
                                                    ifelse(Religious_Attendance_noncoded== "A Few times a year", 3,
                                                           ifelse(Religious_Attendance_noncoded== "Once or twice a month", 4,
@@ -66,49 +66,27 @@ survey_data_attendance <- survey_data_attendance %>%
                                                              ifelse(Political_Party_noncoded== "Republican", 3, NA))))))
                                                           
 survey_data_attendance <- survey_data_attendance %>%
-  mutate(National_Trust = ifelse(National_Trust_noncoded== "Almost never", 1,
+  mutate(National_Trust_High4_Low1 = ifelse(National_Trust_noncoded== "Almost never", 1,
                                        ifelse(National_Trust_noncoded== "Only some of the time", 2,
                                               ifelse(National_Trust_noncoded== "Most of the time", 3,
                                                      ifelse(National_Trust_noncoded== "Just about always", 4, NA)))))
                                                      
 survey_data_attendance <- survey_data_attendance %>%
-  mutate(LocalGov_Trust = ifelse(LocalGov_trust_noncoded== "Almost never", 1,
+  mutate(LocalGov_Trust_High4_Low1 = ifelse(LocalGov_trust_noncoded== "Almost never", 1,
                                        ifelse(LocalGov_trust_noncoded== "Only some of the time", 2,
                                               ifelse(LocalGov_trust_noncoded== "Most of the time", 3,
                                                      ifelse(LocalGov_trust_noncoded== "Just about always", 4, NA)))))
                                                      
 survey_data_attendance <- survey_data_attendance %>%
-  mutate(Trust_Others = ifelse(Trust_Others_noncoded== "1- You can't be too careful", 1,
+  mutate(Trust_Others_High5_Low1 = ifelse(Trust_Others_noncoded== "1- You can't be too careful", 1,
                                        ifelse(Trust_Others_noncoded== "2", 2,
                                               ifelse(Trust_Others_noncoded== "3", 3,
                                                      ifelse(Trust_Others_noncoded== "4", 4,
                                                             ifelse(Trust_Others_noncoded== "5- Most people can be trusted", 5, NA))))))
                                                             
-survey_data_attendance <- survey_data_attendance %>%
-  mutate(Trust_Others_HighLow = ifelse(Trust_Others_noncoded== "1- You can't be too careful", 0,
-                                       ifelse(Trust_Others_noncoded== "2", 0,
-                                              ifelse(Trust_Others_noncoded== "3", 0,
-                                                     ifelse(Trust_Others_noncoded== "4", 1,
-                                                            ifelse(Trust_Others_noncoded== "5- Most people can be trusted", 1, NA))))))
-                                                            
-survey_data_attendance <- survey_data_attendance %>%
-  mutate(LocalGov_Trust_HighLow = ifelse(LocalGov_trust_noncoded== "Almost never", 0,
-                                       ifelse(LocalGov_trust_noncoded== "Only some of the time", 0,
-                                              ifelse(LocalGov_trust_noncoded== "Most of the time", 1,
-                                                     ifelse(LocalGov_trust_noncoded== "Just about always", 1, NA)))))
+
                                                      
-survey_data_attendance <- survey_data_attendance %>%
-  mutate(National_Trust_HighLow = ifelse(National_Trust_noncoded== "Almost never", 0,
-                                       ifelse(National_Trust_noncoded== "Only some of the time", 0,
-                                              ifelse(National_Trust_noncoded== "Most of the time", 1,
-                                                     ifelse(National_Trust_noncoded== "Just about always", 1, NA)))))
-survey_data_attendance <- survey_data_attendance %>%
-  mutate(Religious_HighLow = ifelse(Religious_Attendance_noncoded== "Never", 0,
-                                            ifelse(Religious_Attendance_noncoded== "Once a year or less", 0,
-                                                   ifelse(Religious_Attendance_noncoded== "A Few times a year", 0,
-                                                          ifelse(Religious_Attendance_noncoded== "Once or twice a month", 0,
-                                                                 ifelse(Religious_Attendance_noncoded== "Once a week", 1,
-                                                                        ifelse(Religious_Attendance_noncoded== "More than once a week", 1, NA))))) ))
+
                                                             
 survey_data_attendance_control <- survey_data_attendance %>%
   filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
@@ -117,7 +95,7 @@ survey_data_attendance_control <- survey_data_attendance %>%
 table(survey_data_attendance$Control, useNA = "always")
 table(survey_data_attendance_control$exit_treaty, useNA = "always")
 
-model_attendance_control <- glm(exit_treaty ~ Gender + Political_Party + Religious_Attendance + National_Trust + LocalGov_Trust + Trust_Others, 
+model_attendance_control <- glm(exit_treaty ~ Gender + Political_Party + Religious_Attendance_High6_Low1 + National_Trust_High4_Low1 + LocalGov_Trust_High4_Low1 + Trust_Others_High5_Low1, 
              data = survey_data_attendance_control, family = binomial(link = "logit"))
 
 summary(model_attendance_control)
@@ -132,7 +110,7 @@ survey_data_attendance_norms <- survey_data_attendance %>%
   mutate(exit_treaty = ifelse(Treatment_Norms == "Leave the treaty", 1, 0))
   
 
-model_attendance_norms <- glm(exit_treaty ~ Gender + Political_Party + Religious_Attendance + National_Trust + LocalGov_Trust + Trust_Others, 
+model_attendance_norms <- glm(exit_treaty ~ Gender + Political_Party + Religious_Attendance_High6_Low1 + National_Trust_High4_Low1 + LocalGov_Trust_High4_Low1 + Trust_Others_High5_Low1, 
              data = survey_data_attendance_norms, family = binomial(link = "logit"))
 
 summary(model_attendance_norms)
@@ -146,7 +124,7 @@ survey_data_attendance_consequence <- survey_data_attendance %>%
   mutate(exit_treaty = ifelse(Treatment_Consequence == "Leave the treaty", 1, 0))
   
 
-model_attendance_consequence <- glm(exit_treaty ~ Gender + Political_Party + Religious_Attendance + National_Trust + LocalGov_Trust + Trust_Others, 
+model_attendance_consequence <- glm(exit_treaty ~ Gender + Political_Party + Religious_Attendance_High6_Low1 + National_Trust_High4_Low1 + LocalGov_Trust_High4_Low1 + Trust_Others_High5_Low1, 
              data = survey_data_attendance_consequence, family = binomial(link = "logit"))
 
 summary(model_attendance_consequence)
@@ -208,51 +186,34 @@ survey_data_affiliation <- survey_data_affiliation %>%
 
 
 survey_data_affiliation <- survey_data_affiliation %>%
-     mutate(National_Trust = ifelse(National_Trust_noncoded== "Almost never", 1,
+     mutate(National_Trust_High4_Low1 = ifelse(National_Trust_noncoded== "Almost never", 1,
                                           ifelse(National_Trust_noncoded== "Only some of the time", 2,
                                                  ifelse(National_Trust_noncoded== "Most of the time", 3,
                                                         ifelse(National_Trust_noncoded== "Just about always", 4, NA)))))
 
 
 survey_data_affiliation <- survey_data_affiliation %>%
-     mutate(LocalGov_Trust = ifelse(LocalGov_trust_noncoded== "Almost never", 1,
+     mutate(LocalGov_Trust_High4_Low1 = ifelse(LocalGov_trust_noncoded== "Almost never", 1,
                                           ifelse(LocalGov_trust_noncoded== "Only some of the time", 2,
                                                  ifelse(LocalGov_trust_noncoded== "Most of the time", 3,
                                                         ifelse(LocalGov_trust_noncoded== "Just about always", 4, NA)))))
 
 
 survey_data_affiliation <- survey_data_affiliation %>%
-     mutate(Trust_Others = ifelse(Trust_Others_noncoded== "1- You can't be too careful", 1,
+     mutate(Trust_Others_High5_Low1 = ifelse(Trust_Others_noncoded== "1- You can't be too careful", 1,
                                         ifelse(Trust_Others_noncoded== "2", 2,
                                                ifelse(Trust_Others_noncoded== "3", 3,
                                                      ifelse(Trust_Others_noncoded== "4", 4,
                                                      ifelse(Trust_Others_noncoded== "5- Most people can be trusted", 5, NA))))))
                                               
-survey_data_affiliation <- survey_data_affiliation %>%
-     mutate(National_Trust_HighLow = ifelse(National_Trust_noncoded== "Almost never", 0,
-                                          ifelse(National_Trust_noncoded== "Only some of the time", 0,
-                                                 ifelse(National_Trust_noncoded== "Most of the time", 1,
-                                                        ifelse(National_Trust_noncoded== "Just about always", 1, NA)))))
-                                                        
-survey_data_affiliation <- survey_data_affiliation %>%
-     mutate(LocalGov_Trust_HighLow = ifelse(LocalGov_trust_noncoded== "Almost never", 0,
-                                          ifelse(LocalGov_trust_noncoded== "Only some of the time", 0,
-                                                 ifelse(LocalGov_trust_noncoded== "Most of the time", 1,
-                                                        ifelse(LocalGov_trust_noncoded== "Just about always", 1, NA)))))
 
-survey_data_affiliation <- survey_data_affiliation %>%
-     mutate(Trust_Others_HighLow = ifelse(Trust_Others_noncoded== "1- You can't be too careful", 0,
-                                        ifelse(Trust_Others_noncoded== "2", 0,
-                                               ifelse(Trust_Others_noncoded== "3", 0,
-                                                     ifelse(Trust_Others_noncoded== "4", 1,
-                                                     ifelse(Trust_Others_noncoded== "5- Most people can be trusted", 1, NA))))))
 
 survey_data_control_affiliation <- survey_data_affiliation %>%
      filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>%
      mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
 
 
-model_control_affiliation <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust + LocalGov_Trust + Trust_Others, 
+model_control_affiliation <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust_High4_Low1 + LocalGov_Trust_High4_Low1 + Trust_Others_High5_Low1, 
                       data = survey_data_control_affiliation, family = binomial(link = "logit"))
 
 
@@ -270,7 +231,7 @@ survey_data_norms_affiliation <- survey_data_affiliation %>%
      mutate(exit_treaty = ifelse(Treatment_Norms == "Leave the treaty", 1, 0))
 
 
-model_norms_affiliation <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust + LocalGov_Trust + Trust_Others, 
+model_norms_affiliation <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust_High4_Low1 + LocalGov_Trust_High4_Low1 + Trust_Others_High5_Low1, 
                     data = survey_data_norms_affiliation, family = binomial(link = "logit"))
 
 
@@ -288,7 +249,7 @@ survey_data_consequence_affiliation <- survey_data_affiliation %>%
      mutate(exit_treaty = ifelse(Treatment_Consequence == "Leave the treaty", 1, 0))
 
 
-model_consequence_affiliation <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust + LocalGov_Trust + Trust_Others, 
+model_consequence_affiliation <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust_High4_Low1 + LocalGov_Trust_High4_Low1 + Trust_Others_High5_Low1, 
                           data = survey_data_consequence_affiliation, family = binomial(link = "logit"))
 
 
@@ -322,7 +283,7 @@ survey_data_both <- filtered_data_both %>%
 
 
 survey_data_both <- survey_data_both %>%
-  mutate(Religious_Attendance = ifelse(Religious_Attendance_noncoded== "Never", 1,
+  mutate(Religious_Attendance_High6_Low1 = ifelse(Religious_Attendance_noncoded== "Never", 1,
                                             ifelse(Religious_Attendance_noncoded== "Once a year or less", 2,
                                                    ifelse(Religious_Attendance_noncoded== "A Few times a year", 3,
                                                           ifelse(Religious_Attendance_noncoded== "Once or twice a month",4,
@@ -333,26 +294,13 @@ survey_data_both <- survey_data_both %>%
 survey_data_both <- survey_data_both %>% mutate(Political_Party = ifelse(Political_Party_noncoded== "Democrat", 1, ifelse(Political_Party_noncoded== "Independent", 2, ifelse(Political_Party_noncoded== "Other", 2, ifelse(Political_Party_noncoded== "Don't Know", 2, ifelse(Political_Party_noncoded== "Republican", 3, NA))))))
 
 
-survey_data_both <- survey_data_both %>% mutate(National_Trust = ifelse(National_Trust_noncoded== "Almost never", 1, ifelse(National_Trust_noncoded== "Only some of the time", 2, ifelse(National_Trust_noncoded== "Most of the time", 3, ifelse(National_Trust_noncoded== "Just about always", 4, NA)))))
+survey_data_both <- survey_data_both %>% mutate(National_Trust_High4_Low1 = ifelse(National_Trust_noncoded== "Almost never", 1, ifelse(National_Trust_noncoded== "Only some of the time", 2, ifelse(National_Trust_noncoded== "Most of the time", 3, ifelse(National_Trust_noncoded== "Just about always", 4, NA)))))
 
 
-survey_data_both <- survey_data_both %>% mutate(LocalGov_Trust = ifelse(LocalGov_trust_noncoded== "Almost never", 1, ifelse(LocalGov_trust_noncoded== "Only some of the time", 2, ifelse(LocalGov_trust_noncoded== "Most of the time", 3, ifelse(LocalGov_trust_noncoded== "Just about always", 4, NA)))))
+survey_data_both <- survey_data_both %>% mutate(LocalGov_Trust_High4_Low1 = ifelse(LocalGov_trust_noncoded== "Almost never", 1, ifelse(LocalGov_trust_noncoded== "Only some of the time", 2, ifelse(LocalGov_trust_noncoded== "Most of the time", 3, ifelse(LocalGov_trust_noncoded== "Just about always", 4, NA)))))
 
-survey_data_both <- survey_data_both %>% mutate(Trust_Others = ifelse(Trust_Others_noncoded== "1- You can't be too careful", 1, ifelse(Trust_Others_noncoded== "2", 2, ifelse(Trust_Others_noncoded== "3", 3, ifelse(Trust_Others_noncoded== "4", 4, ifelse(Trust_Others_noncoded== "5- Most people can be trusted", 5, NA))))))
+survey_data_both <- survey_data_both %>% mutate(Trust_Others_High5_Low1 = ifelse(Trust_Others_noncoded== "1- You can't be too careful", 1, ifelse(Trust_Others_noncoded== "2", 2, ifelse(Trust_Others_noncoded== "3", 3, ifelse(Trust_Others_noncoded== "4", 4, ifelse(Trust_Others_noncoded== "5- Most people can be trusted", 5, NA))))))
 
-survey_data_both <- survey_data_both %>% mutate(National_Trust_HighLow = ifelse(National_Trust_noncoded== "Almost never", 0, ifelse(National_Trust_noncoded== "Only some of the time", 0, ifelse(National_Trust_noncoded== "Most of the time", 1, ifelse(National_Trust_noncoded== "Just about always", 1, NA)))))
-
-survey_data_both <- survey_data_both %>% mutate(LocalGov_Trust_HighLow = ifelse(LocalGov_trust_noncoded== "Almost never", 0, ifelse(LocalGov_trust_noncoded== "Only some of the time", 0, ifelse(LocalGov_trust_noncoded== "Most of the time", 1, ifelse(LocalGov_trust_noncoded== "Just about always", 1, NA)))))
-
-survey_data_both <- survey_data_both %>% mutate(Trust_Others_HighLow = ifelse(Trust_Others== "1- You can't be too careful", 0, ifelse(Trust_Others_noncoded== "2", 0, ifelse(Trust_Others_noncoded== "3", 0, ifelse(Trust_Others_noncoded== "4", 1, ifelse(Trust_Others_noncoded== "5- Most people can be trusted", 1, NA))))))
-
-survey_data_both <- survey_data_both %>%
-  mutate(Religious_HighLow = ifelse(Religious_Attendance_noncoded== "Never", 0,
-                                            ifelse(Religious_Attendance_noncoded== "Once a year or less", 0,
-                                                   ifelse(Religious_Attendance_noncoded== "A Few times a year", 0,
-                                                          ifelse(Religious_Attendance_noncoded== "Once or twice a month",0,
-                                                                 ifelse(Religious_Attendance_noncoded== "Once a week", 1,
-                                                                        ifelse(Religious_Attendance_noncoded== "More than once a week", 1, NA)))))))
 
 
 survey_data_both <- survey_data_both %>% mutate(Gender = ifelse(Gender_noncoded == "Male", 1, ifelse(Gender_noncoded == "Female", 2, NA)))
@@ -361,7 +309,7 @@ survey_data_both <- survey_data_both %>% mutate(Gender = ifelse(Gender_noncoded 
 survey_data_control_both <- survey_data_both %>% filter(Control %in% c("Leave the treaty", "Remain in the treaty")) %>% mutate(exit_treaty = ifelse(Control == "Leave the treaty", 1, 0))
 
 
-model_control_both <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust + LocalGov_Trust + Trust_Others + Religious_Attendance, data = survey_data_control_both, family = binomial(link = "logit"))
+model_control_both <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust_High4_Low1 + LocalGov_Trust_High4_Low1 + Trust_Others_High5_Low1 + Religious_Attendance_High6_Low1, data = survey_data_control_both, family = binomial(link = "logit"))
 
 
 summary(model_control_both)
@@ -376,7 +324,7 @@ summary(marginal_effects_control_both)
 survey_data_norms_both <- survey_data_both %>% filter(Treatment_Norms %in% c("Leave the treaty", "Remain in the treaty")) %>% mutate(exit_treaty = ifelse(Treatment_Norms == "Leave the treaty", 1, 0))
 
 
-model_norms_both <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust + LocalGov_Trust + Trust_Others + Religious_Attendance, data = survey_data_norms_both, family = binomial(link = "logit"))
+model_norms_both <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust_High4_Low1 + LocalGov_Trust_High4_Low1 + Trust_Others_High5_Low1 + Religious_Attendance_High6_Low1, data = survey_data_norms_both, family = binomial(link = "logit"))
 
 
 summary(model_norms_both)
@@ -392,7 +340,7 @@ survey_data_consequence_both <- survey_data_both %>%
  filter(Treatment_Consequence %in% c("Leave the treaty", "Remain in the treaty")) %>% mutate(exit_treaty = ifelse(Treatment_Consequence == "Leave the treaty", 1, 0))
 
 
-model_consequence_both <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust + LocalGov_Trust + Trust_Others + Religious_Attendance, data = survey_data_consequence_both, family = binomial(link = "logit"))
+model_consequence_both <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust_High4_Low1 + LocalGov_Trust_High4_Low1 + Trust_Others_High5_Low1 + Religious_Attendance_High6_Low1, data = survey_data_consequence_both, family = binomial(link = "logit"))
 
 
 summary(model_consequence_both)
@@ -596,37 +544,37 @@ ggplot(marginal_effects_norms_both_table, aes(x = term, y = estimate)) +
   
 ##Making Interaction Models
 interaction_model_attendance_trust_others <- glm(
-    exit_treaty ~ Religious_Attendance * Trust_Others, 
+    exit_treaty ~ Religious_Attendance_High6_Low1 * Trust_Others_High5_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
 interaction_model_attendance_national_trust <- glm(
-    exit_treaty ~ Religious_Attendance * National_Trust, 
+    exit_treaty ~ Religious_Attendance_High6_Low1 * National_Trust_High4_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
 interaction_model_attendance_local_trust <- glm(
-    exit_treaty ~ Religious_Attendance * LocalGov_Trust, 
+    exit_treaty ~ Religious_Attendance_High6_Low1 * LocalGov_Trust_High4_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
 interaction_model_party_trust_others <- glm(
-    exit_treaty ~ Political_Party * Trust_Others, 
+    exit_treaty ~ Political_Party * Trust_Others_High5_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
 interaction_model_party_national_trust <- glm(
-    exit_treaty ~ Political_Party * National_Trust, 
+    exit_treaty ~ Political_Party * National_Trust_High4_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
 interaction_model_party_local_trust <- glm(
-    exit_treaty ~ Political_Party * LocalGov_Trust, 
+    exit_treaty ~ Political_Party * LocalGov_Trust_High4_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
@@ -652,14 +600,14 @@ plot_interaction <- function(model, predictor, moderator, data) {
         theme_minimal()
 }
 
-# Plot interactions for each model
-p1 <- plot_interaction(interaction_model_attendance_trust_others, "Religious_Attendance", "Trust_Others", survey_data_attendance_control)
-p2 <- plot_interaction(interaction_model_attendance_national_trust, "Religious_Attendance", "National_Trust", survey_data_attendance_control)
-p3 <- plot_interaction(interaction_model_attendance_local_trust, "Religious_Attendance", "LocalGov_Trust", survey_data_attendance_control)
+# Plot interactions for each model-Attendance Control
+p1 <- plot_interaction(interaction_model_attendance_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_control)
+p2 <- plot_interaction(interaction_model_attendance_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_control)
+p3 <- plot_interaction(interaction_model_attendance_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)
 
-p4 <- plot_interaction(interaction_model_party_trust_others, "Political_Party", "Trust_Others", survey_data_attendance_control)
-p5 <- plot_interaction(interaction_model_party_national_trust, "Political_Party", "National_Trust", survey_data_attendance_control)
-p6 <- plot_interaction(interaction_model_party_local_trust, "Political_Party", "LocalGov_Trust", survey_data_attendance_control)
+p4 <- plot_interaction(interaction_model_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_control)
+p5 <- plot_interaction(interaction_model_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_control)
+p6 <- plot_interaction(interaction_model_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)
 
 # Print plots
 print(p1)
@@ -671,31 +619,6 @@ print(p6)
 
 
 
-##Additional regressions: High/Low Trust and High/Low Religion
-
-model_control_HighTrust <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust_HighLow + LocalGov_Trust_HighLow + Trust_Others_HighLow + Religious_Attendance, data = survey_data_control_both, family = binomial(link = "logit"))
-
-summary(model_control_HighTrust)
-
-model_control_HighReligion <- glm(exit_treaty ~ Gender + Political_Party  + National_Trust + LocalGov_Trust + Trust_Others + Religious_HighLow, data = survey_data_control_both, family = binomial(link = "logit"))
-
-summary(model_control_HighReligion)
-
-model_consequence_HighTrust <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust_HighLow + LocalGov_Trust_HighLow + Trust_Others_HighLow + Religious_Attendance, data = survey_data_consequence_both, family = binomial(link = "logit"))
-
-summary(model_consequence_HighTrust)
-
-model_consequence_HighReligion <- glm(exit_treaty ~ Gender + Political_Party  + National_Trust + LocalGov_Trust + Trust_Others + Religious_HighLow, data = survey_data_consequence_both, family = binomial(link = "logit"))
-
-summary(model_consequence_HighReligion)
-
-model_norms_HighTrust <- glm(exit_treaty ~ Gender + Political_Party + Religious_Affiliation + National_Trust_HighLow + LocalGov_Trust_HighLow + Trust_Others_HighLow + Religious_Attendance, data = survey_data_norms_both, family = binomial(link = "logit"))
-
-summary(model_norms_HighTrust)
-
-model_norms_HighReligion <- glm(exit_treaty ~ Gender + Political_Party  + National_Trust + LocalGov_Trust + Trust_Others + Religious_HighLow, data = survey_data_norms_both, family = binomial(link = "logit"))
-
-summary(model_norms_HighReligion)
 
 
 ##Demographics Summary Statistics
@@ -707,7 +630,22 @@ demographic_data <- demographic_data %>%
     Political_Party = Q17,
     Gender = Q31,
     Racial_Identity = Q33,
-    Religious_Affiliation = Q131)
+    Religious_Affiliation = Q131
+  )
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
 
 does not attend services
 
