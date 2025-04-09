@@ -707,16 +707,8 @@ demographic_data <- demographic_data %>%
     Political_Party = Q17,
     Gender = Q31,
     Racial_Identity = Q33,
-    Religious_Affiliation = Q131
-  )
-  
-  
+    Religious_Affiliation = Q131)
 
+does not attend services
 
-
-
-
-
-
-
-
+name high low
