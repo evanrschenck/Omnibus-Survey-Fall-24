@@ -712,3 +712,5 @@ demographic_data <- demographic_data %>%
 does not attend services
 
 name high low
+
+effect size direction of effect in plot caption
