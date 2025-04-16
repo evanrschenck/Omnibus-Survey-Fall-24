@@ -542,38 +542,38 @@ ggplot(marginal_effects_norms_both_table, aes(x = term, y = estimate)) +
    theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
   
-##Making Interaction Models
-interaction_model_attendance_trust_others <- glm(
+##Making Interaction Models-- Control
+interaction_model_control_trust_others <- glm(
     exit_treaty ~ Religious_Attendance_High6_Low1 * Trust_Others_High5_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
-interaction_model_attendance_national_trust <- glm(
+interaction_model_control_national_trust <- glm(
     exit_treaty ~ Religious_Attendance_High6_Low1 * National_Trust_High4_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
-interaction_model_attendance_local_trust <- glm(
+interaction_model_control_local_trust <- glm(
     exit_treaty ~ Religious_Attendance_High6_Low1 * LocalGov_Trust_High4_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
-interaction_model_party_trust_others <- glm(
+interaction_model_control_party_trust_others <- glm(
     exit_treaty ~ Political_Party * Trust_Others_High5_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
-interaction_model_party_national_trust <- glm(
+interaction_model_control_party_national_trust <- glm(
     exit_treaty ~ Political_Party * National_Trust_High4_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
 )
 
-interaction_model_party_local_trust <- glm(
+interaction_model_control_party_local_trust <- glm(
     exit_treaty ~ Political_Party * LocalGov_Trust_High4_Low1, 
     data = survey_data_attendance_control, 
     family = binomial(link = "logit")
@@ -586,28 +586,16 @@ install.packages("ggeffects")
 library(ggplot2)
 library(ggeffects)
 
-# Define a function to plot interaction effects
-plot_interaction <- function(model, predictor, moderator, data) {
-    # Generate predicted probabilities
-    interaction_effect <- ggpredict(model, terms = c(predictor, moderator))
 
-    # Plot the interaction effect
-    ggplot(interaction_effect, aes(x = x, y = predicted, color = group)) +
-        geom_line(size = 1) +
-        geom_point(size = 2) +
-        labs(x = predictor, y = "Predicted Probability of Exit Treaty",
-             color = moderator, title = paste("Interaction Effect of", predictor, "and", moderator)) +
-        theme_minimal()
-}
 
 # Plot interactions for each model-Attendance Control
-p1 <- plot_interaction(interaction_model_attendance_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_control)
-p2 <- plot_interaction(interaction_model_attendance_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_control)
-p3 <- plot_interaction(interaction_model_attendance_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)
+p1 <- plot_interaction(interaction_model_control_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_control)
+p2 <- plot_interaction(interaction_model_control_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_control)
+p3 <- plot_interaction(interaction_model_control_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)
 
-p4 <- plot_interaction(interaction_model_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_control)
-p5 <- plot_interaction(interaction_model_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_control)
-p6 <- plot_interaction(interaction_model_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)
+p4 <- plot_interaction(interaction_model_control_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_control)
+p5 <- plot_interaction(interaction_model_control_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_control)
+p6 <- plot_interaction(interaction_model_control_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)
 
 # Print plots
 print(p1)
@@ -617,6 +605,62 @@ print(p4)
 print(p5)
 print(p6)
 
+
+##Making Interaction Models-- Consequence
+interaction_model_consequence_trust_others <- glm(
+    exit_treaty ~ Religious_Attendance_High6_Low1 * Trust_Others_High5_Low1, 
+    data = survey_data_attendance_consequence, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_consequence_national_trust <- glm(
+    exit_treaty ~ Religious_Attendance_High6_Low1 * National_Trust_High4_Low1, 
+    data = survey_data_attendance_consequence, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_consequence_local_trust <- glm(
+    exit_treaty ~ Religious_Attendance_High6_Low1 * LocalGov_Trust_High4_Low1, 
+    data = survey_data_attendance_consequence, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_consequence_party_trust_others <- glm(
+    exit_treaty ~ Political_Party * Trust_Others_High5_Low1, 
+    data = survey_data_attendance_consequence, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_consequence_party_national_trust <- glm(
+    exit_treaty ~ Political_Party * National_Trust_High4_Low1, 
+    data = survey_data_attendance_consequence, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_consequence_party_local_trust <- glm(
+    exit_treaty ~ Political_Party * LocalGov_Trust_High4_Low1, 
+    data = survey_data_attendance_consequence, 
+    family = binomial(link = "logit")
+)
+
+
+
+# Plot interactions for each model-Attendance Consequence
+p7 <- plot_interaction(interaction_model_consequence_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_consequence)
+p8 <- plot_interaction(interaction_model_consequence_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_consequence)
+p9 <- plot_interaction(interaction_model_consequence_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_consequence)
+
+p10 <- plot_interaction(interaction_model_consequence_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_consequence)
+p11 <- plot_interaction(interaction_model_consequence_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_consequence)
+p12 <- plot_interaction(interaction_model_consequence_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_consequence)
+
+# Print plots
+print(p7)
+print(p8)
+print(p9)
+print(p10)
+print(p11)
+print(p12)
 
 
 
@@ -645,14 +689,3 @@ demographic_data <- demographic_data %>%
 
 
 
-
-
-does not attend services
-
-name high low
-
-effect size direction of effect in plot caption
-
-label interaction plot axises (closer to 0 is less trust, up on top say how 4 is high, etc.)
-
-treatment norms/treatment consequence for exit treaty 
