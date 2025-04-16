@@ -589,7 +589,7 @@ library(ggeffects)
 
 
 # Plot interactions for each model-Attendance Control
-p1 <- plot_interaction(interaction_model_control_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_control)
+p1 <- plot_interaction(interaction_model_control_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_control) + labs(title = "Interaction Effects Between Religious Attendance and Trust in Others with Control Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
 p2 <- plot_interaction(interaction_model_control_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_control)
 p3 <- plot_interaction(interaction_model_control_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)
 
