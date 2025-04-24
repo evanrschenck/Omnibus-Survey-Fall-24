@@ -663,6 +663,64 @@ print(p11)
 print(p12)
 
 
+  
+##Making Interaction Models-- Treatment Norms
+interaction_model_norms_trust_others <- glm(
+    exit_treaty ~ Religious_Attendance_High6_Low1 * Trust_Others_High5_Low1, 
+    data = survey_data_attendance_norms, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_norms_national_trust <- glm(
+    exit_treaty ~ Religious_Attendance_High6_Low1 * National_Trust_High4_Low1, 
+    data = survey_data_attendance_norms, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_norms_local_trust <- glm(
+    exit_treaty ~ Religious_Attendance_High6_Low1 * LocalGov_Trust_High4_Low1, 
+    data = survey_data_attendance_norms, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_norms_party_trust_others <- glm(
+    exit_treaty ~ Political_Party * Trust_Others_High5_Low1, 
+    data = survey_data_attendance_norms, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_norms_party_national_trust <- glm(
+    exit_treaty ~ Political_Party * National_Trust_High4_Low1, 
+    data = survey_data_attendance_norms, 
+    family = binomial(link = "logit")
+)
+
+interaction_model_norms_party_local_trust <- glm(
+    exit_treaty ~ Political_Party * LocalGov_Trust_High4_Low1, 
+    data = survey_data_attendance_norms, 
+    family = binomial(link = "logit")
+)
+
+
+
+# Plot interactions for each model-Attendance Consequence
+p13 <- plot_interaction(interaction_model_norms_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_norms)
+p14 <- plot_interaction(interaction_model_norms_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_norms)
+p15 <- plot_interaction(interaction_model_norms_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_norms)
+
+p16 <- plot_interaction(interaction_model_norms_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_norms)
+p17 <- plot_interaction(interaction_model_norms_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_norms)
+p18 <- plot_interaction(interaction_model_norms_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_norms)
+
+# Print plots
+print(p13)
+print(p14)
+print(p15)
+print(p16)
+print(p17)
+print(p18)
+
+
 
 
 ##Demographics Summary Statistics
@@ -675,9 +733,7 @@ demographic_data <- demographic_data %>%
     Gender = Q31,
     Racial_Identity = Q33,
     Religious_Affiliation = Q131
-  )
-  
-  
+  )  
   
   
 
