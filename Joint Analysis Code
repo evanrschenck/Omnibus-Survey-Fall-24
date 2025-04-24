@@ -589,13 +589,13 @@ library(ggeffects)
 
 
 # Plot interactions for each model-Attendance Control
-p1 <- plot_interaction(interaction_model_control_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_control) + labs(title = "Interaction Effects Between Religious Attendance and Trust in Others with Control Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
-p2 <- plot_interaction(interaction_model_control_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_control) + labs(title = "Interaction Effects Between Religious Attendance and National Trust with Control Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
-p3 <- plot_interaction(interaction_model_control_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_control) + labs(title = "Interaction Effects Between Religious Attendance and Local Trust with Control Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
+p1 <- p1 <- plot_interaction(interaction_model_control_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_control) + labs(title = "Interaction Effects Between Religious Attendance and Trust in Others with Control Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
+p2 <- plot_interaction(interaction_model_control_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_control)+ labs(title = "Interaction Effects Between Religious Attendance and Trust in National Government with Control Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
+p3 <- plot_interaction(interaction_model_control_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)+ labs(title = "Interaction Effects Between Religious Attendance and Trust Local Government with Control Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
 
-p4 <- plot_interaction(interaction_model_control_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_control) + labs(title = "Interaction Effects Between Political Party and Trust in Others with Control Variable", x = "Political Party (Republican=3, Democrat=1)", y = "Predicted Support")
-p5 <- plot_interaction(interaction_model_control_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_control) + labs(title = "Interaction Effects Between Political Party and National Trust with Control Variable", x = "Political Party (Republican=3, Democrat=1)", y = "Predicted Support")
-p6 <- plot_interaction(interaction_model_control_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_control) + + labs(title = "Interaction Effects Between Political Party and Local Trust with Control Variable", x = "Political Party (Republican=3, Democrat=1)", y = "Predicted Support")
+p4 <- plot_interaction(interaction_model_control_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_control)
+p5 <- plot_interaction(interaction_model_control_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_control)
+p6 <- plot_interaction(interaction_model_control_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)
 
 # Print plots
 print(p1)
@@ -662,9 +662,7 @@ print(p10)
 print(p11)
 print(p12)
 
-
-  
-##Making Interaction Models-- Treatment Norms
+##Making Interaction Models-- Norms
 interaction_model_norms_trust_others <- glm(
     exit_treaty ~ Religious_Attendance_High6_Low1 * Trust_Others_High5_Low1, 
     data = survey_data_attendance_norms, 
@@ -703,8 +701,8 @@ interaction_model_norms_party_local_trust <- glm(
 
 
 
-# Plot interactions for each model-Attendance Consequence
-p13 <- plot_interaction(interaction_model_norms_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_norms)
+# Plot interactions for each model-Attendance Norms
+p13 <- plot_interaction(interaction_model_norms_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_consequence)
 p14 <- plot_interaction(interaction_model_norms_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_norms)
 p15 <- plot_interaction(interaction_model_norms_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_norms)
 
@@ -723,6 +721,12 @@ print(p18)
 
 
 
+
+
+
+
+
+
 ##Demographics Summary Statistics
 demographic_data <- `Omnibus_Survey_Analysis` %>%
   select(Q17, Q31, Q33, Q131)
@@ -733,15 +737,34 @@ demographic_data <- demographic_data %>%
     Gender = Q31,
     Racial_Identity = Q33,
     Religious_Affiliation = Q131
-  )  
+  )
   
-  
+install.packages("janitor")
 
+# Load necessary packages
+library(dplyr)
+library(janitor)
 
+# Select the relevant columns (replace these with your actual variable names if needed)
+demographic_data <- demographic_data %>%
+  select(Gender, Political_Party, Religious_Affiliation, Racial_Identity)
 
+demographic_data <- demographic_data %>%
+  filter(
+    Gender %in% c("Male", "Female", "Prefer not to disclose"),
+    Political_Party %in% c("Democrat", "Republican", "Independent", "Other", "Don't know"),
+    Religious_Affiliation %in% c("Catholic", "Protestant", "Jewish", "Muslim", "None"),
+    Racial_Identity %in% c("White", "Hispanic", "Black", "Multi-racial", "Native American", "Asian", "Other")
+  )
 
+# Then tabulate the clean values
+gender_counts <- tabyl(demographic_data$Gender) %>% adorn_totals("row")
+party_counts <- tabyl(demographic_data$Political_Party) %>% adorn_totals("row")
+religion_counts <- tabyl(demographic_data$Religious_Affiliation) %>% adorn_totals("row")
+race_counts <- tabyl(demographic_data$Racial_Identity) %>% adorn_totals("row")
 
-
-
-
-
+# Print
+gender_counts
+party_counts
+religion_counts
+race_counts
