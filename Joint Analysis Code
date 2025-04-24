@@ -593,9 +593,9 @@ p1 <- p1 <- plot_interaction(interaction_model_control_trust_others, "Religious_
 p2 <- plot_interaction(interaction_model_control_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_control)+ labs(title = "Interaction Effects Between Religious Attendance and Trust in National Government with Control Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
 p3 <- plot_interaction(interaction_model_control_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)+ labs(title = "Interaction Effects Between Religious Attendance and Trust Local Government with Control Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
 
-p4 <- plot_interaction(interaction_model_control_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_control)
-p5 <- plot_interaction(interaction_model_control_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_control)
-p6 <- plot_interaction(interaction_model_control_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)
+p4 <- plot_interaction(interaction_model_control_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_control)+ labs(title = "Interaction Effects Between Political Party and Trust in Others with Control Variable", x = "Political Party (Democrat=1,Other=2,Republican=3)", y = "Predicted Support")
+p5 <- plot_interaction(interaction_model_control_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_control)+ labs(title = "Interaction Effects Between Political Party and Trust in National Government with Control Variable", x = "Political Party (Democrat=1,Other=2,Republican=3)", y = "Predicted Support")
+p6 <- plot_interaction(interaction_model_control_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_control)+ labs(title = "Interaction Effects Between Political Party and Trust in Local Government with Control Variable", x = "Political Party (Democrat=1,Other=2,Republican=3)", y = "Predicted Support")
 
 # Print plots
 print(p1)
@@ -646,13 +646,16 @@ interaction_model_consequence_party_local_trust <- glm(
 
 
 # Plot interactions for each model-Attendance Consequence
-p7 <- plot_interaction(interaction_model_consequence_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_consequence)
-p8 <- plot_interaction(interaction_model_consequence_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_consequence)
-p9 <- plot_interaction(interaction_model_consequence_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_consequence)
+p7 <- plot_interaction(interaction_model_consequence_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_consequence)+ labs(title = "Interaction Effects Between Religious Attendance and Trust in Others with Consequence Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
+p8 <- plot_interaction(interaction_model_consequence_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_consequence)+ labs(title = "Interaction Effects Between Religious Attendance and Trust in National Government with Consequence Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
+p9 <- plot_interaction(interaction_model_consequence_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_consequence)+ labs(title = "Interaction Effects Between Religious Attendance and Trust Local Government with Consequence Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
 
-p10 <- plot_interaction(interaction_model_consequence_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_consequence)
-p11 <- plot_interaction(interaction_model_consequence_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_consequence)
-p12 <- plot_interaction(interaction_model_consequence_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_consequence)
+
+p10 <- plot_interaction(interaction_model_consequence_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_consequence)+ labs(title = "Interaction Effects Between Political Party and Trust in Others with Consequence Variable", x = "Political Party (Democrat=1,Other=2,Republican=3)", y = "Predicted Support")
+p11 <- plot_interaction(interaction_model_consequence_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_consequence)+ labs(title = "Interaction Effects Between Political Party and Trust in National Government with Consequence Variable", x = "Political Party (Democrat=1,Other=2,Republican=3)", y = "Predicted Support")
+
+p12 <- plot_interaction(interaction_model_consequence_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_consequence)+ labs(title = "Interaction Effects Between Political Party and Trust in Local Government with Consequence Variable", x = "Political Party (Democrat=1,Other=2,Republican=3)", y = "Predicted Support")
+
 
 # Print plots
 print(p7)
@@ -702,13 +705,14 @@ interaction_model_norms_party_local_trust <- glm(
 
 
 # Plot interactions for each model-Attendance Norms
-p13 <- plot_interaction(interaction_model_norms_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_consequence)
-p14 <- plot_interaction(interaction_model_norms_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_norms)
-p15 <- plot_interaction(interaction_model_norms_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_norms)
+p13 <- plot_interaction(interaction_model_norms_trust_others, "Religious_Attendance_High6_Low1", "Trust_Others_High5_Low1", survey_data_attendance_consequence)+ labs(title = "Interaction Effects Between Religious Attendance and Trust in Others with Norms Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
+p14 <- plot_interaction(interaction_model_norms_national_trust, "Religious_Attendance_High6_Low1", "National_Trust_High4_Low1", survey_data_attendance_norms)+ labs(title = "Interaction Effects Between Religious Attendance and Trust in National Government with Norms Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
+p15 <- plot_interaction(interaction_model_norms_local_trust, "Religious_Attendance_High6_Low1", "LocalGov_Trust_High4_Low1", survey_data_attendance_norms)+ labs(title = "Interaction Effects Between Religious Attendance and Trust Local Government with Norms Variable", x = "Religious Attendance (High=6, Low=1)", y = "Predicted Support")
 
-p16 <- plot_interaction(interaction_model_norms_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_norms)
-p17 <- plot_interaction(interaction_model_norms_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_norms)
-p18 <- plot_interaction(interaction_model_norms_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_norms)
+
+p16 <- plot_interaction(interaction_model_norms_party_trust_others, "Political_Party", "Trust_Others_High5_Low1", survey_data_attendance_norms)+ labs(title = "Interaction Effects Between Political Party and Trust in Others with Norms Variable", x = "Political Party (Democrat=1,Other=2,Republican=3)", y = "Predicted Support")
+p17 <- plot_interaction(interaction_model_norms_party_national_trust, "Political_Party", "National_Trust_High4_Low1", survey_data_attendance_norms)+ labs(title = "Interaction Effects Between Political Party and Trust in National Government with Norms Variable", x = "Political Party (Democrat=1,Other=2,Republican=3)", y = "Predicted Support")
+p18 <- plot_interaction(interaction_model_norms_party_local_trust, "Political_Party", "LocalGov_Trust_High4_Low1", survey_data_attendance_norms)+ labs(title = "Interaction Effects Between Political Party and Trust in Local Government with Norms Variable", x = "Political Party (Democrat=1,Other=2,Republican=3)", y = "Predicted Support")
 
 # Print plots
 print(p13)
